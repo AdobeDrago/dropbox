@@ -1,3 +1,5 @@
+@import url('brand.css');
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -11,33 +13,31 @@
  */
 
 :root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  /* colors: brand values live in brand.css */
+  --background-color: #fff;
+  --light-color: #f7f5f2;
+  --dark-color: #1e1919;
+  --text-color: #1e1919;
+  --link-color: #0061fe;
+  --link-hover-color: #0050d0;
 
-  /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  /* fonts: brand families live in brand.css */
 
   /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
+  --body-font-size-m: 16px;
+  --body-font-size-s: 16px;
+  --body-font-size-xs: 14px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
+  --heading-font-size-xxl: var(--heading-size-xxl);
+  --heading-font-size-xl: var(--heading-size-xl);
+  --heading-font-size-l: var(--heading-size-l);
+  --heading-font-size-m: var(--heading-size-m);
+  --heading-font-size-s: var(--heading-size-s);
+  --heading-font-size-xs: var(--heading-size-xs);
 
   /* nav height */
-  --nav-height: 64px;
+  --nav-height: 72px;
 }
 
 /* fallback fonts */
@@ -56,17 +56,9 @@
 @media (width >= 900px) {
   :root {
     /* body sizes */
-    --body-font-size-m: 18px;
+    --body-font-size-m: 16px;
     --body-font-size-s: 16px;
     --body-font-size-xs: 14px;
-
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
   }
 }
 
@@ -77,7 +69,7 @@ body {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 body.appear {
@@ -105,10 +97,10 @@ h4,
 h5,
 h6 {
   margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-bottom: 0.4em;
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 500;
+  line-height: 1.2;
   scroll-margin: 40px;
 }
 
@@ -118,6 +110,15 @@ h3 { font-size: var(--heading-font-size-l); }
 h4 { font-size: var(--heading-font-size-m); }
 h5 { font-size: var(--heading-font-size-s); }
 h6 { font-size: var(--heading-font-size-xs); }
+
+/* section headings use the Sharp Grotesk 23 display cut */
+main .section > .default-content-wrapper h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-family: var(--display-font-family);
+  font-weight: 400;
+  text-align: center;
+}
 
 p,
 dl,
@@ -146,13 +147,6 @@ main > div {
   margin: 40px 16px;
 }
 
-input,
-textarea,
-select,
-button {
-  font: inherit;
-}
-
 /* links */
 a:any-link {
   color: var(--link-color);
@@ -179,11 +173,13 @@ button.button {
   max-width: 100%;
   margin: 0;
   border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font: inherit;
+  border-radius: var(--button-radius);
+  padding: 14px 24px;
+  font-family: var(--body-font-family);
+  font-size: 16px;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1.2;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
@@ -199,18 +195,19 @@ button.button:disabled {
 
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  border-color: var(--brand-blue);
+  background-color: var(--brand-blue);
+  color: var(--on-dark-color);
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  border-color: var(--link-hover-color);
+  background-color: var(--link-hover-color);
+  color: var(--on-dark-color);
+  text-decoration: none;
 }
 
 a.button.primary[aria-disabled="true"],
@@ -235,9 +232,10 @@ a.button.secondary:hover,
 a.button.secondary:focus-visible,
 button.button.secondary:hover,
 button.button.secondary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--light-color);
-  color: var(--dark-color);
+  border-color: var(--text-color);
+  background-color: var(--text-color);
+  color: var(--background-color);
+  text-decoration: none;
 }
 
 a.button.secondary[aria-disabled="true"],
@@ -296,12 +294,19 @@ main img {
 }
 
 /* sections */
+
+/* Dropbox rhythm: 72px above each section, 72px after the last one */
 main > .section {
-  margin: 40px 0;
+  margin: 0;
+  padding: var(--section-padding) 0 0;
+}
+
+main > .section:last-child {
+  padding-bottom: var(--section-padding);
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: var(--content-max-width);
   margin: auto;
   padding: 0 24px;
 }
@@ -312,7 +317,7 @@ main > .section:first-of-type {
 
 @media (width >= 900px) {
   main > .section > div {
-    padding: 0 32px;
+    padding: 0 48px;
   }
 }
 
@@ -323,3 +328,137 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+main .section.light-beige {
+  background-color: var(--coconut-color);
+}
+
+main .section.dark {
+  background-color: var(--graphite-color);
+  color: var(--on-dark-color);
+}
+
+/* rounded dark gradient panel inset from the page edges */
+main .section.dark-panel {
+  margin: 0 12px;
+  border-radius: 20px;
+  background: linear-gradient(#292c31, #000);
+  color: var(--on-dark-color);
+}
+
+main .section.dark h1,
+main .section.dark h2,
+main .section.dark h3,
+main .section.dark p,
+main .section.dark a:any-link,
+main .section.dark-panel h2,
+main .section.dark-panel h3,
+main .section.dark-panel p,
+main .section.dark-panel a:any-link {
+  color: var(--on-dark-color);
+}
+
+main .section.dark a.button.secondary,
+main .section.dark-panel a.button.secondary {
+  border-color: var(--on-dark-color);
+  color: var(--on-dark-color);
+}
+
+main .section.dark a.button.secondary:hover,
+main .section.dark a.button.secondary:focus-visible,
+main .section.dark-panel a.button.secondary:hover,
+main .section.dark-panel a.button.secondary:focus-visible {
+  background-color: var(--on-dark-color);
+  color: var(--graphite-color);
+}
+
+@media (width >= 900px) {
+  main .section.dark-panel {
+    margin: 0 48px;
+    padding: var(--section-padding-large) 0;
+  }
+}
+
+/* default content layout; overrides are ordered by intent, not specificity */
+/* stylelint-disable no-descending-specificity */
+
+/* feature and security headings: Sharp Grotesk medium */
+main .section > .default-content-wrapper:has(picture) h2 {
+  font-family: var(--heading-font-family);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* social-proof heading above the logo strip */
+main .section.carousel-logos-container > .default-content-wrapper h2 {
+  margin-bottom: 32px;
+  font-family: var(--body-font-family);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+/* default content: centered intro/feature copy */
+main .default-content-wrapper:has(h2),
+main .default-content-wrapper:has(> p:only-child > a:only-child) {
+  text-align: center;
+}
+
+main .default-content-wrapper:has(h2) p {
+  max-width: 780px;
+  margin-inline: auto;
+  color: var(--text-muted-color);
+}
+
+main .default-content-wrapper:has(h2) p > a:only-child:not(.button) {
+  color: var(--text-color);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+/* feature sections (copy + image): pill eyebrow, contained image */
+main .default-content-wrapper:has(h2):has(picture) > p:first-child:not(:has(picture, a)) {
+  display: inline-block;
+  margin: 0 0 16px;
+  border-radius: 100px;
+  padding: 4px 15px;
+  background-color: var(--coconut-color);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+main .default-content-wrapper:has(h2) p:has(> picture:only-child) {
+  max-width: 600px;
+  margin: 48px auto 0;
+}
+
+main .default-content-wrapper:has(h2) p:has(> picture:only-child) img {
+  display: block;
+  width: 100%;
+  border-radius: 16px;
+}
+
+main .section.dark-panel .default-content-wrapper p:has(> picture:only-child) img {
+  border-radius: 0;
+}
+
+/* security panel: only the product visual is shown; the small decorative collage pieces are hidden */
+main .section.dark-panel .default-content-wrapper p:has(> picture:only-child):not(:last-child) {
+  display: none;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+main .section.dark .default-content-wrapper p > a:only-child:not(.button),
+main .section.dark-panel .default-content-wrapper p > a:only-child:not(.button) {
+  color: var(--on-dark-color);
+}
+/* stylelint-enable no-descending-specificity */

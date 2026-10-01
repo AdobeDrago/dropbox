@@ -1,0 +1,125 @@
+/* values measured on dropbox.com (.dwg-multi-block.dwg-plank-frame--graphite) */
+
+/*
+ * The source grid is inset by one column of a 14-column (mobile) or 26-column
+ * (tablet+) track measured across the full plank width (max 1344px), while the
+ * EDS section wrapper already pads its content by 24px (mobile) or 48px (desktop).
+ * --ci-inset converts the source inset into an offset from the block edge.
+ */
+.cards-integration {
+  --ci-inset: calc((100% + 48px) / 14 - 24px);
+  --ci-card-pad: 12px;
+}
+
+.cards-integration > ul {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px 0;
+  margin: 0 var(--ci-inset);
+  padding: 0;
+  list-style: none;
+}
+
+.cards-integration .cards-integration-card {
+  display: grid;
+  grid-auto-rows: max-content;
+  row-gap: 16px;
+  padding: 0 var(--ci-card-pad);
+}
+
+/* icon frame: full-width 48px row, logo scaled down and pinned left */
+.cards-integration .cards-integration-card-icon {
+  display: flex;
+  align-items: center;
+  height: 48px;
+}
+
+.cards-integration .cards-integration-card-icon picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-integration .cards-integration-card-icon img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 48px;
+  object-fit: scale-down;
+  object-position: left center;
+}
+
+.cards-integration .cards-integration-card-body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.cards-integration .cards-integration-card-body h3 {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.cards-integration .cards-integration-card-body p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.cards-integration .cards-integration-card-body p a:any-link {
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+/* "Connect now" call to action: underlined label + trailing arrow */
+.cards-integration .cards-integration-card-body p.cards-integration-card-cta {
+  line-height: 19.2px;
+}
+
+.cards-integration .cards-integration-card-body p.cards-integration-card-cta a:any-link {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.2px;
+  text-decoration: underline;
+}
+
+.cards-integration .cards-integration-card-body p.cards-integration-card-cta a:any-link::after {
+  content: '';
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-block: -2.4px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+@media (width >= 768px) {
+  .cards-integration {
+    --ci-inset: calc((100% + 48px) / 26 - 24px);
+  }
+
+  .cards-integration > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 72px 0;
+  }
+}
+
+@media (width >= 900px) {
+  /* section wrapper pads 48px here; source plank is capped at 1344px and centred */
+  .cards-integration {
+    --ci-inset: max(calc((100% + 96px) / 26 - 48px), min(calc(50% - 620.31px), 51.69px));
+  }
+}
+
+@media (width >= 1024px) {
+  .cards-integration {
+    --ci-card-pad: 24px;
+  }
+}

@@ -1,0 +1,179 @@
+/* hero-split: values from dropbox.com .dwg-hero-l3-plank computed styles */
+
+/* full-bleed hero: no section padding, 1440px max grid (source .dwg-flex-grid) */
+main > .section.hero-split-container {
+  padding: 0;
+}
+
+main > .section.hero-split-container > .hero-split-wrapper {
+  max-width: 1440px;
+  padding: 0;
+}
+
+.hero-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* content column: 16px extra top space mirrors the source's empty eyebrow row */
+.hero-split .hero-split-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 16px;
+  padding: 40px 24px 24px;
+}
+
+.hero-split .hero-split-content h1 {
+  margin: 0;
+  font-size: var(--heading-font-size-xxl);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.hero-split .hero-split-content p {
+  margin: 0;
+  color: var(--text-muted-color);
+  font-size: 16px;
+  line-height: 24px;
+  text-wrap: pretty;
+}
+
+/* CTAs: 32px above (16px gap + 16px), stacked on small screens */
+.hero-split .hero-split-ctas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px 48px;
+  margin-top: 16px;
+}
+
+.hero-split .hero-split-ctas p {
+  margin: 0;
+}
+
+.hero-split .hero-split-ctas a:any-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* trailing arrow icon (source dig-UIIcon arrow, 24x24, 1.5 stroke) */
+.hero-split .hero-split-ctas a:any-link::after {
+  content: '';
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-block: calc((1.2em - 24px) / 2);
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+/* primary button: brand blue, 16px 24px padding, 24px text-to-icon gap */
+main .hero-split .hero-split-ctas a.button:any-link {
+  gap: 24px;
+  padding: 16px 24px;
+}
+
+/* secondary text link: dark text, 1px muted underline, 4px text-to-icon gap */
+.hero-split .hero-split-ctas a:any-link:not(.button) {
+  gap: 4px;
+  color: var(--text-color);
+  text-decoration: underline 1px var(--text-muted-color);
+  text-underline-position: under;
+}
+
+.hero-split .hero-split-ctas a:not(.button):hover {
+  color: var(--text-color);
+  text-decoration-color: currentcolor;
+}
+
+/* media: square box, video/image contained */
+.hero-split .hero-split-media {
+  position: relative;
+  justify-self: stretch;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+}
+
+.hero-split .hero-split-media picture {
+  display: contents;
+}
+
+.hero-split .hero-split-media video,
+.hero-split .hero-split-media img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (width >= 768px) {
+  .hero-split .hero-split-content {
+    padding: 48px 32px 32px;
+  }
+
+  .hero-split .hero-split-content h1 {
+    font-size: 40px;
+  }
+}
+
+@media (width >= 900px) {
+  .hero-split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .hero-split.hero-split-no-media {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-split .hero-split-content {
+    padding: 64px 48px 48px;
+  }
+
+  .hero-split .hero-split-content p {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .hero-split .hero-split-media {
+    min-height: 600px;
+  }
+}
+
+@media (width >= 1280px) {
+  .hero-split .hero-split-ctas {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (width >= 1440px) {
+  /* source split at 1440: 609.219px content / 830.766px media */
+  .hero-split {
+    grid-template-columns: minmax(0, 609fr) minmax(0, 831fr);
+  }
+
+  .hero-split .hero-split-media {
+    aspect-ratio: auto;
+    min-height: 0;
+    padding: 0 48px;
+  }
+
+  .hero-split .hero-split-media video,
+  .hero-split .hero-split-media img {
+    position: static;
+    aspect-ratio: 1 / 1;
+    height: auto;
+  }
+
+  main .hero-split .hero-split-ctas a.button:any-link {
+    padding: 24px;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "variantName": "cards-industry",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "moderate",
+    "purpose": "industry-tiles",
+    "imagePattern": "image-left",
+    "structure": "image + h3 + paragraph + link"
+  },
+  "contentPattern": "6 rows: [photo | H3, paragraph, link]",
+  "usage": {
+    "pagesUsing": ["https://www.dropbox.com/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-30"
+  },
+  "options": [],
+  "memberVariantIds": ["cards-industry"]
+}

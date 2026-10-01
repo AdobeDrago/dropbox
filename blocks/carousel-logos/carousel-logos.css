@@ -1,0 +1,107 @@
+/* the logo strip runs edge to edge like the source ticker */
+main > .section > .carousel-logos-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.carousel-logos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-logos .carousel-logos-viewport {
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-logos .carousel-logos-reel {
+  display: flex;
+  width: max-content;
+}
+
+/* a single, non-animated set is centered in the viewport */
+.carousel-logos:not(.carousel-logos-animated) .carousel-logos-reel {
+  margin: 0 auto;
+}
+
+.carousel-logos .carousel-logos-track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.carousel-logos .carousel-logos-item {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  margin: 0 48px;
+}
+
+.carousel-logos .carousel-logos-item a,
+.carousel-logos .carousel-logos-item picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-logos .carousel-logos-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: scale-down;
+}
+
+/* every track moves by its own width, so the copies loop seamlessly */
+.carousel-logos.carousel-logos-animated .carousel-logos-track {
+  animation: carousel-logos-scroll var(--carousel-logos-duration, 90s) linear infinite;
+}
+
+.carousel-logos.carousel-logos-paused .carousel-logos-track,
+.carousel-logos.carousel-logos-animated .carousel-logos-reel:hover .carousel-logos-track {
+  animation-play-state: paused;
+}
+
+.carousel-logos .carousel-logos-controls {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.carousel-logos .carousel-logos-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.carousel-logos .carousel-logos-toggle svg {
+  display: block;
+  width: 32px;
+  height: 32px;
+  fill: currentcolor;
+}
+
+.carousel-logos .carousel-logos-toggle .carousel-logos-icon-play,
+.carousel-logos.carousel-logos-paused .carousel-logos-toggle .carousel-logos-icon-pause {
+  display: none;
+}
+
+.carousel-logos.carousel-logos-paused .carousel-logos-toggle .carousel-logos-icon-play {
+  display: inline;
+}
+
+@keyframes carousel-logos-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}

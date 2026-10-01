@@ -1,0 +1,128 @@
+/* cards-industry: horizontal industry tiles (image left, text right) */
+
+.cards-industry > ul {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin: 0;
+  padding: 0 16px;
+  list-style: none;
+}
+
+.cards-industry .cards-industry-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: var(--coconut-color);
+}
+
+/* source hides the photo on small screens */
+.cards-industry .cards-industry-card-image {
+  display: none;
+}
+
+.cards-industry .cards-industry-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 24px;
+}
+
+.cards-industry .cards-industry-card-body h3 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
+  color: var(--text-color);
+}
+
+.cards-industry .cards-industry-card-body p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-muted-color);
+}
+
+/* "Learn more" text link with trailing arrow */
+.cards-industry .cards-industry-card-body .cards-industry-card-cta {
+  padding-top: 12px;
+}
+
+.cards-industry .cards-industry-card-cta a:any-link {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.2px;
+  color: var(--text-color);
+  text-decoration: underline 1px var(--text-muted-color);
+  text-underline-position: under;
+}
+
+.cards-industry .cards-industry-card-cta a:any-link:hover,
+.cards-industry .cards-industry-card-cta a:any-link:focus-visible {
+  color: var(--text-color);
+  text-decoration-color: var(--text-color);
+}
+
+/* whole tile is clickable, as on the source */
+.cards-industry .cards-industry-card-cta a:any-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.cards-industry .cards-industry-card-cta a:any-link::after {
+  content: "";
+  display: inline-block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-block: -2.4px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+/* horizontal tile: fixed-width image column left, text right */
+@media (width >= 600px) {
+  .cards-industry .cards-industry-card {
+    grid-template-columns: 186px minmax(0, 1fr);
+  }
+
+  .cards-industry .cards-industry-card.cards-industry-card-no-image {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cards-industry .cards-industry-card-image {
+    display: block;
+    position: relative;
+    align-self: stretch;
+    background-color: rgb(238 233 226);
+  }
+
+  .cards-industry .cards-industry-card-image picture,
+  .cards-industry .cards-industry-card-image img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (width >= 900px) {
+  /* source insets the tiles by 1/26 of the container plus a 12px gutter
+     (63.7px at the 1344px container); the section already supplies 48px */
+  .cards-industry > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 clamp(0px, max(100vw / 26 - 36px, (100vw - 1344px) / 2 + 15.7px), 63.7px);
+  }
+}
