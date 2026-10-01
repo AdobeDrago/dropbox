@@ -1,0 +1,24 @@
+{
+  "variantName": "carousel-quote",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light-beige",
+    "density": "spacious",
+    "purpose": "testimonial-slider",
+    "imagePattern": "noimg",
+    "structure": "quote + link + name + role"
+  },
+  "contentPattern": "3 rows, 1 cell (no image): [quote paragraph, 'Read full review' link, author name (strong) paragraph, role paragraph]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "carousel-quote"
+  ]
+}

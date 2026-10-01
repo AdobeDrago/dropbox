@@ -1,0 +1,24 @@
+{
+  "variantName": "cards-badge",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "minimal",
+    "purpose": "award-badges",
+    "imagePattern": "image-top",
+    "structure": "image + h3 + paragraph"
+  },
+  "contentPattern": "4 rows: [badge image | H3, paragraph]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "cards-badge"
+  ]
+}

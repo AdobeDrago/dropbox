@@ -1,0 +1,191 @@
+/* accordion-media: values from dropbox.com/enterprise .dwg-jtbd-plank computed styles */
+
+/* full-bleed white plank (coconut-200); main clips horizontal overflow */
+.accordion-media {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 72px;
+  margin-inline: calc(50% - 50vw);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* source cell gutter: 1/14 of the viewport on mobile, 1/26 from 768px */
+.accordion-media .accordion-media-items {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-inline: calc(100vw / 14);
+}
+
+.accordion-media .accordion-media-item {
+  border-top: 1px solid rgb(166 158 146 / 60%);
+}
+
+.accordion-media .accordion-media-item:last-child {
+  border-bottom: 1px solid rgb(166 158 146 / 60%);
+}
+
+/* label: 32px above, 32px collapsed space below (source dropdown keeps a 32px closed height) */
+.accordion-media .accordion-media-item-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32px 12px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: var(--text-color);
+}
+
+.accordion-media .accordion-media-item[open] > .accordion-media-item-label {
+  padding-bottom: 0;
+}
+
+.accordion-media .accordion-media-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-media .accordion-media-item-title {
+  min-width: 0;
+}
+
+/* chevron: source 24px icon in a 28px line box, flipped 180deg when open */
+.accordion-media .accordion-media-item-label::after {
+  content: '';
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0 0 4px 24px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='black' stroke-miterlimit='10' stroke-width='1.5' d='m5.25 9.25 6.5 6.25 6.5-6.25'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+  transition: transform 0.3s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.accordion-media .accordion-media-item[open] > .accordion-media-item-label::after {
+  transform: rotate(180deg);
+}
+
+/* body text: 12px top, 48px + 12px right, 32px bottom, 12px left */
+.accordion-media .accordion-media-item-body {
+  padding: 12px 60px 32px 12px;
+}
+
+.accordion-media .accordion-media-item-body p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--text-color);
+}
+
+/* arrow CTA: medium 16px, 1px muted underline, 24px arrow 4px after the text */
+.accordion-media .accordion-media-item-body p.accordion-media-item-cta {
+  margin-top: 24px;
+  line-height: 19.2px;
+}
+
+.accordion-media .accordion-media-item-cta > a:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: var(--text-color);
+  text-decoration: underline 1px;
+  text-decoration-color: var(--text-muted-color);
+}
+
+.accordion-media .accordion-media-item-cta > a:any-link:hover {
+  color: var(--text-color);
+}
+
+.accordion-media .accordion-media-item-cta > a::after {
+  content: '';
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin-block: -3px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='black' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+/* mobile: the illustration sits under the open item's text, edge to edge of the accordion (1:1 coconut-500 frame) */
+.accordion-media .accordion-media-item-media {
+  aspect-ratio: 1 / 1;
+  margin: 32px -60px -32px -12px;
+  overflow: hidden;
+  background-color: rgb(192 187 180);
+}
+
+.accordion-media .accordion-media-item-media picture,
+.accordion-media .accordion-media-item-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.accordion-media .accordion-media-panel {
+  display: none;
+}
+
+@media (width >= 768px) {
+  .accordion-media .accordion-media-items {
+    padding-inline: calc(100vw / 26);
+  }
+
+  .accordion-media .accordion-media-item-media {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* desktop: accordion fills the left half, the open item's illustration fills the right half to the viewport edge */
+@media (width >= 900px) {
+  .accordion-media.accordion-media-has-panel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .accordion-media.accordion-media-has-panel .accordion-media-panel {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background-color: rgb(192 187 180);
+  }
+
+  .accordion-media .accordion-media-panel .accordion-media-item-media {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .accordion-media .accordion-media-panel .accordion-media-item-media.is-active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (width >= 1024px) {
+  .accordion-media .accordion-media-item-label::after {
+    margin-left: 152px;
+  }
+}
+
+/* ultrawide: source grid gives the accordion 9 of 26 columns */
+@media (width >= 1920px) {
+  .accordion-media.accordion-media-has-panel {
+    grid-template-columns: minmax(0, 9fr) minmax(0, 17fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion-media .accordion-media-item-label::after,
+  .accordion-media .accordion-media-panel .accordion-media-item-media {
+    transition: none;
+  }
+}

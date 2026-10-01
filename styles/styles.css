@@ -147,6 +147,11 @@ main > div {
   margin: 40px 16px;
 }
 
+/* full-bleed media must never cause horizontal scrolling (clip keeps sticky intact) */
+main {
+  overflow-x: clip;
+}
+
 /* links */
 a:any-link {
   color: var(--link-color);
@@ -305,6 +310,7 @@ main > .section:last-child {
   padding-bottom: var(--section-padding);
 }
 
+
 main > .section > div {
   max-width: var(--content-max-width);
   margin: auto;
@@ -405,10 +411,20 @@ main .default-content-wrapper:has(> p:only-child > a:only-child) {
   text-align: center;
 }
 
+/* section intros sit in an 827px column (source headline stack); feature copy in 780px */
+main .default-content-wrapper:has(h2) > h2,
 main .default-content-wrapper:has(h2) p {
-  max-width: 780px;
+  max-width: 827px;
   margin-inline: auto;
+}
+
+main .default-content-wrapper:has(h2) p {
   color: var(--text-muted-color);
+}
+
+main .default-content-wrapper:has(h2):has(picture) > h2,
+main .default-content-wrapper:has(h2):has(picture) p {
+  max-width: 780px;
 }
 
 main .default-content-wrapper:has(h2) p > a:only-child:not(.button) {
@@ -460,5 +476,13 @@ button {
 main .section.dark .default-content-wrapper p > a:only-child:not(.button),
 main .section.dark-panel .default-content-wrapper p > a:only-child:not(.button) {
   color: var(--on-dark-color);
+}
+
+/* across a background change into a section that opens with intro copy, the upper
+   section keeps its own 72px band (source planks carry a 72px margin in the upper colour) */
+main > .section.dark:not(:first-child):has(+ .section:not(.dark) > .default-content-wrapper:first-child),
+main > .section.light-beige:not(:first-child):has(+ .section:not(.light-beige) > .default-content-wrapper:first-child),
+main > .section:not(:first-child, .dark, .light-beige, .dark-panel):has(+ .section:is(.dark, .light-beige, .dark-panel) > .default-content-wrapper:first-child) {
+  padding-bottom: var(--section-padding);
 }
 /* stylelint-enable no-descending-specificity */

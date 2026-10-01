@@ -1,6 +1,6 @@
-# cards-integration
+# accordion-media
 
-Custom **cards** block. Purpose: integration-list.
+Custom **accordion** block. Purpose: feature-accordion.
 
 ## Authoring (Document Authoring)
 
@@ -10,9 +10,7 @@ Single block table. Content: one row, one cell of content.
 
 ## Supported variations
 
-| Variation | Option class |
-| --- | --- |
-| 4 columns (desktop) | `four-up` |
+No variations.
 
 ## Universal Editor fields
 

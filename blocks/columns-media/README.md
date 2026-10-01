@@ -1,6 +1,6 @@
-# cards-integration
+# columns-media
 
-Custom **cards** block. Purpose: integration-list.
+Custom **columns** block. Purpose: feature-media-text.
 
 ## Authoring (Document Authoring)
 
@@ -10,9 +10,7 @@ Single block table. Content: one row, one cell of content.
 
 ## Supported variations
 
-| Variation | Option class |
-| --- | --- |
-| 4 columns (desktop) | `four-up` |
+No variations.
 
 ## Universal Editor fields
 

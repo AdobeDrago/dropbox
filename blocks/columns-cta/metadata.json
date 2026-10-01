@@ -1,0 +1,24 @@
+{
+  "variantName": "columns-cta",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "moderate",
+    "purpose": "prefooter-cta",
+    "imagePattern": "noimg",
+    "structure": "h2 + cta"
+  },
+  "contentPattern": "1 row x 2 cells: [H2 | CTA link]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "columns-cta"
+  ]
+}

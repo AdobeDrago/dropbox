@@ -11,10 +11,15 @@
   },
   "contentPattern": "1 row: cell with H1, paragraph, CTA links; media (video link / poster image) in a second cell or preceding row",
   "usage": {
-    "pagesUsing": ["https://www.dropbox.com/"],
-    "reuseCount": 1,
-    "lastUsed": "2026-09-30"
+    "pagesUsing": [
+      "https://www.dropbox.com/",
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 2,
+    "lastUsed": "2026-10-01"
   },
   "options": [],
-  "memberVariantIds": ["hero-split"]
+  "memberVariantIds": [
+    "hero-split"
+  ]
 }

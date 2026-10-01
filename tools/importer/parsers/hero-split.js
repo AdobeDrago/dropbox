@@ -25,6 +25,7 @@ export default function parse(element, { document }) {
   // an empty <p> followed by the text <p>); dedupe by text.
   const seen = new Set();
   const paragraphs = [];
+  const paragraphSources = [];
   contentArea.querySelectorAll('p').forEach((p) => {
     if (p.closest('a')) return;
     if (p.querySelector('p')) return;
@@ -34,6 +35,7 @@ export default function parse(element, { document }) {
     const np = document.createElement('p');
     np.textContent = text;
     paragraphs.push(np);
+    paragraphSources.push(p);
   });
 
   // CTAs: rebuild as clean links using the label span (drops decorative icon images)
@@ -89,9 +91,20 @@ export default function parse(element, { document }) {
   }
   if (mediaCell.length) cells.push([mediaCell]);
 
+  // Eyebrow (enterprise: "Dropbox Enterprise"): paragraphs that precede the heading in source
+  // order stay above it. Home has no pre-heading paragraph, so its output is unchanged.
   const contentCell = [];
+  const before = [];
+  const after = [];
+  paragraphs.forEach((np, i) => {
+    const src = paragraphSources[i];
+    // eslint-disable-next-line no-bitwise
+    const precedes = heading && (src.compareDocumentPosition(heading) & 4); // FOLLOWING
+    (precedes ? before : after).push(np);
+  });
+  contentCell.push(...before);
   if (heading) contentCell.push(heading);
-  contentCell.push(...paragraphs, ...ctaParas);
+  contentCell.push(...after, ...ctaParas);
   cells.push([contentCell]);
 
   const block = WebImporter.Blocks.createBlock(document, { name: 'hero-split', cells });

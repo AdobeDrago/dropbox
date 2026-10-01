@@ -99,9 +99,29 @@ export default function decorate(block) {
     ctaParas.forEach((p) => ctas.append(p));
   }
 
+  // eyebrow: a short plain-text paragraph authored before the heading
+  const heading = content.querySelector(':scope > h1, :scope > h2');
+  const eyebrow = heading?.previousElementSibling;
+  if (eyebrow?.tagName === 'P' && !eyebrow.querySelector('a, picture, img')
+    && eyebrow.textContent.trim()) {
+    eyebrow.classList.add('hero-split-eyebrow');
+  }
+
   decorateMedia(media);
 
   block.replaceChildren(content);
-  if (media.children.length) block.append(media);
-  else block.classList.add('hero-split-no-media');
+  if (!media.children.length) {
+    block.classList.add('hero-split-no-media');
+    return;
+  }
+  block.append(media);
+
+  // still-image media (no video) uses the product-screenshot hero layout
+  if (!media.querySelector('video') && media.querySelector('img')) {
+    block.classList.add('hero-split-image');
+    // the hero image is the LCP candidate
+    const img = media.querySelector('img');
+    img.loading = 'eager';
+    img.fetchPriority = 'high';
+  }
 }

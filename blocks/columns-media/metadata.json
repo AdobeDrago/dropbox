@@ -1,0 +1,24 @@
+{
+  "variantName": "columns-media",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light-beige",
+    "density": "spacious",
+    "purpose": "feature-media-text",
+    "imagePattern": "full-bleed-alternating",
+    "structure": "image + eyebrow + h2 + paragraph + cta"
+  },
+  "contentPattern": "2 rows x 2 cells: row 1 [image | eyebrow p, H2, p, p]; row 2 [eyebrow p, H2, p, p, CTA link | image]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "columns-media"
+  ]
+}

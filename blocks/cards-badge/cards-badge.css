@@ -1,0 +1,103 @@
+/* cards-badge: G2 award badge tiles (values from dropbox.com/enterprise computed styles) */
+
+/*
+ * Source grid is inset from its 1344px frame by one grid unit (frame / 14 below
+ * 768px, frame / 26 above). The inline margin reproduces that inset relative to
+ * the EDS section wrapper (24px gutters below 900px, 48px above, 1344px cap).
+ */
+.cards-badge > ul {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 48px 0;
+  margin: 0 calc((100% + 48px) / 14 - 24px);
+  padding: 0;
+  list-style: none;
+}
+
+.cards-badge .cards-badge-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding: 0 12px;
+}
+
+/* square black tile, badge contained inside 32px padding */
+.cards-badge .cards-badge-card-image {
+  box-sizing: border-box;
+  display: flex;
+  aspect-ratio: 1 / 1;
+  padding: 32px;
+  background-color: #000;
+  overflow: hidden;
+}
+
+.cards-badge .cards-badge-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-badge .cards-badge-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cards-badge .cards-badge-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cards-badge .cards-badge-card-body > * {
+  margin: 0;
+}
+
+.cards-badge .cards-badge-card-body h3 {
+  font-family: var(--body-font-family);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.cards-badge .cards-badge-card-body p {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@media (width >= 480px) {
+  .cards-badge > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 768px) {
+  .cards-badge > ul {
+    row-gap: 72px;
+    margin: 0 calc((100% + 48px) / 26 - 24px);
+  }
+}
+
+@media (width >= 900px) {
+  .cards-badge > ul {
+    margin: 0 max(calc((100% + 96px) / 26 - 48px), calc(50% - 620.3px));
+  }
+}
+
+@media (width >= 1024px) {
+  .cards-badge > ul {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .cards-badge .cards-badge-card {
+    padding: 0 24px;
+  }
+}
+
+/* 72px between a section intro (default content) and the grid, as on the source */
+.default-content-wrapper + .cards-badge-wrapper > .cards-badge {
+  margin-top: 72px;
+}

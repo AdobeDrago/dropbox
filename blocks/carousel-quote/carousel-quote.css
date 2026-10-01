@@ -1,0 +1,241 @@
+/* Dropbox quote gallery: values from computed styles of .dwg-quote-gallery on /enterprise */
+.carousel-quote {
+  color: var(--graphite-color);
+  text-align: left;
+}
+
+/* quote view (graphite-300 theme): slides + hover-revealed side arrows */
+.carousel-quote .carousel-quote-viewport {
+  position: relative;
+  overflow: hidden;
+}
+
+/* one full-width slide at a time */
+.carousel-quote .carousel-quote-slides {
+  position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.carousel-quote .carousel-quote-slides::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-quote .carousel-quote-slide {
+  flex: 0 0 100%;
+  display: flex;
+  min-width: 0;
+  scroll-snap-align: center;
+}
+
+.carousel-quote .carousel-quote-slide-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+
+  /* room for the hanging quote mark inside the clipped viewport */
+  padding: 0 0.5ch;
+}
+
+.carousel-quote .carousel-quote-slide-content > * {
+  max-width: 100%;
+  margin: 0;
+}
+
+/* quote: Atlas Grotesk 16/24, hanging opening quote mark */
+.carousel-quote .carousel-quote-slide-text {
+  padding-bottom: 32px;
+  color: var(--graphite-color);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-indent: -0.5ch;
+}
+
+/* "Read full review": medium 16/19.2, muted 1px underline, 24px arrow after a 4px gap */
+.carousel-quote .carousel-quote-slide-link {
+  padding-bottom: 32px;
+  font-size: 16px;
+  line-height: 19.2px;
+}
+
+.carousel-quote .carousel-quote-slide-link a:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--graphite-color);
+  font-weight: 500;
+  line-height: 19.2px;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--text-muted-color);
+}
+
+.carousel-quote .carousel-quote-slide-link a:any-link::after {
+  content: '';
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+
+  /* the 24px icon overhangs the 19.2px line box, as on the source */
+  margin: -2.4px 0;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+.carousel-quote .carousel-quote-slide-link a:any-link:hover {
+  text-decoration-color: currentcolor;
+}
+
+/* author: 14px medium; role: 14/21 muted, 8px above */
+.carousel-quote .carousel-quote-slide-author {
+  color: var(--graphite-color);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.8px;
+}
+
+.carousel-quote .carousel-quote-slide-author strong,
+.carousel-quote .carousel-quote-slide-author b {
+  font-weight: inherit;
+}
+
+.carousel-quote .carousel-quote-slide-role {
+  padding-top: 8px;
+  color: var(--text-muted-color);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-wrap: pretty;
+}
+
+/* large side arrows: 98px hit area, 64px pictogram, revealed on hover (desktop only) */
+.carousel-quote .carousel-quote-side {
+  display: none;
+}
+
+/* page indicator: 44px chevron buttons around the 01/03 counter */
+.carousel-quote .carousel-quote-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.carousel-quote .carousel-quote-counter {
+  display: flex;
+  justify-content: center;
+  min-width: 50px;
+  margin: 0 12px;
+  color: var(--text-muted-color);
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.carousel-quote .carousel-quote-prev,
+.carousel-quote .carousel-quote-next,
+.carousel-quote .carousel-quote-side {
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--graphite-color);
+  cursor: pointer;
+}
+
+.carousel-quote .carousel-quote-prev,
+.carousel-quote .carousel-quote-next {
+  display: flex;
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+}
+
+.carousel-quote .carousel-quote-prev svg,
+.carousel-quote .carousel-quote-next svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.carousel-quote .carousel-quote-prev:focus-visible,
+.carousel-quote .carousel-quote-next:focus-visible,
+.carousel-quote .carousel-quote-side:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+
+@media (width >= 900px) {
+  .carousel-quote {
+    text-align: center;
+  }
+
+  /* 10/12 column quote area: one grid column of inset on each side */
+  .carousel-quote .carousel-quote-slide-content {
+    align-items: center;
+    justify-content: center;
+    padding: 0 calc(100% / 12);
+  }
+
+  .carousel-quote .carousel-quote-counter {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .carousel-quote .carousel-quote-side {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    display: flex;
+    width: 98px;
+    height: 98px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  }
+
+  .carousel-quote .carousel-quote-side svg {
+    display: block;
+    width: 64px;
+    height: 64px;
+  }
+
+  .carousel-quote .carousel-quote-side-prev {
+    left: 0;
+    transform: translate(10%, -50%);
+  }
+
+  .carousel-quote .carousel-quote-side-next {
+    right: 0;
+    transform: translate(-10%, -50%);
+  }
+
+  .carousel-quote .carousel-quote-viewport:hover .carousel-quote-side {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-quote .carousel-quote-slides {
+    scroll-behavior: auto;
+  }
+
+  .carousel-quote .carousel-quote-side {
+    transition: none;
+  }
+}

@@ -1,0 +1,113 @@
+/* columns-cta: pre-footer band, large display heading + large primary CTA
+   values from dropbox.com/enterprise #dwg_pre_footer_plank (computed styles) */
+
+/* source plank has no side padding: gutters are fractions of the 1344px-max inner width */
+main > .section > .columns-cta-wrapper {
+  padding: 0;
+}
+
+.columns-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 0 calc(100% / 14);
+}
+
+.columns-cta .columns-cta-text {
+  min-width: 0;
+  width: 100%;
+}
+
+.columns-cta .columns-cta-text > :first-child {
+  margin-top: 0;
+}
+
+.columns-cta .columns-cta-text > :last-child {
+  margin-bottom: 0;
+}
+
+.columns-cta h2 {
+  margin: 0;
+  font-family: var(--display-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.columns-cta .columns-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.columns-cta .columns-cta-actions > p {
+  margin: 0;
+}
+
+/* dwg-button2 primary / size-large on the graphite theme: light accent blue, graphite text, arrow */
+main .columns-cta a.button.primary:any-link {
+  gap: 24px;
+  border-color: #3984ff;
+  padding: 24px;
+  background-color: #3984ff;
+  color: var(--graphite-color);
+  transition: background-color 0.1s cubic-bezier(0.4, 0, 0.6, 1), border-color 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+main .columns-cta a.button.primary:any-link:hover,
+main .columns-cta a.button.primary:any-link:focus-visible {
+  border-color: #3984ff;
+  background-color: #4d90ff;
+  color: var(--graphite-color);
+}
+
+main .columns-cta a.button.primary:any-link::after {
+  content: "";
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin-block: -2.4px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+@media (width >= 768px) {
+  .columns-cta {
+    padding: 0 calc(100% / 26);
+  }
+
+  .columns-cta h2 {
+    font-size: 32px;
+  }
+}
+
+/* desktop: 26-unit grid, heading 16 units, 1-unit gutter, CTA from unit 18 */
+@media (width >= 1024px) {
+  .columns-cta {
+    display: grid;
+    grid-template-columns: 16fr 1fr 7fr;
+    align-items: start;
+    gap: 0;
+  }
+
+  .columns-cta .columns-cta-text {
+    grid-column: 1;
+  }
+
+  .columns-cta .columns-cta-actions {
+    grid-column: 3;
+  }
+
+  .columns-cta.columns-cta-no-actions {
+    display: block;
+  }
+}
+
+@media (width >= 1280px) {
+  .columns-cta h2 {
+    font-size: 40px;
+    line-height: 1.1;
+  }
+}

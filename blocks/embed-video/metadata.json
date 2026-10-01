@@ -1,0 +1,24 @@
+{
+  "variantName": "embed-video",
+  "baseBlock": "embed",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light-beige",
+    "density": "spacious",
+    "purpose": "video-embed",
+    "imagePattern": "poster",
+    "structure": "poster image + video link"
+  },
+  "contentPattern": "1 row, 1 cell: [poster image, link https://player.vimeo.com/video/915282309]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "embed-video"
+  ]
+}
