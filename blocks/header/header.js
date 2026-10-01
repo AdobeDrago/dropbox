@@ -18,10 +18,15 @@ async function fetchNav() {
  * @param {string} base URL the fragment was fetched from
  */
 function resolveImages(root, base) {
+  const isRelative = (url) => !/^(https?:|data:|\/)/.test(url);
   root.querySelectorAll('img[src]').forEach((img) => {
     const src = img.getAttribute('src');
-    if (!/^(https?:|data:|\/)/.test(src)) img.src = new URL(src, base).href;
+    if (isRelative(src)) img.src = new URL(src, base).href;
     img.loading = 'eager';
+  });
+  root.querySelectorAll('source[srcset]').forEach((source) => {
+    const srcset = source.getAttribute('srcset');
+    if (isRelative(srcset)) source.srcset = new URL(srcset, base).href;
   });
 }
 
@@ -53,15 +58,15 @@ function openItem(nav, item) {
  * @param {HTMLAnchorElement} a link
  */
 function decorateCardLink(a) {
-  const img = a.querySelector('img');
+  const media = a.querySelector('picture') || a.querySelector('img');
   const title = a.querySelector('strong');
-  const desc = [...a.childNodes].filter((n) => n !== img && n !== title)
+  const desc = [...a.childNodes].filter((n) => n !== media && n !== title)
     .map((n) => n.textContent).join('').trim();
   a.textContent = '';
-  if (img) {
+  if (media) {
     const icon = document.createElement('span');
     icon.className = 'nav-card-icon';
-    icon.append(img);
+    icon.append(media);
     a.append(icon);
   }
   const text = document.createElement('span');
@@ -195,8 +200,12 @@ function decorateSection(nav, section) {
       item.classList.add('nav-item');
       const sub = item.querySelector(':scope > ul');
       if (!sub) {
-        const link = item.querySelector(':scope > a');
-        if (link) wrapLabel(link, 'nav-item-label');
+        // authoring may wrap the link in a paragraph (<li><p><a>); normalize to <li><a>
+        const link = item.querySelector(':scope > a, :scope > p > a');
+        if (link) {
+          if (link.parentElement !== item) link.parentElement.replaceWith(link);
+          wrapLabel(link, 'nav-item-label');
+        }
         return;
       }
       if (sub.querySelector('a')) buildDropdownItem(nav, item, sub);
