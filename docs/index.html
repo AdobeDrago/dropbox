@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropbox — dropbox.com → EDS Migration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Dropbox brand (mirrors styles/brand.css) */
+    --et-purple: #0061fe;
+    --et-purple-hover: #0057e5;
+    --et-purple-text: #0050d0; /* AA-compliant on light bg */
+    --et-purple-on-dark: #3984ff;
+    --et-ink: #1e1919;
+    --et-ink-alt: #1e1919;
+    --et-pale-purple: #e6efff;
+    --accent: var(--et-purple);
+
+    --gray-50: #ffffff;
+    --gray-75: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #eaeaea;
+    --gray-300: #e1e1e1;
+    --gray-400: #cacaca;
+    --gray-500: #b3b3b3;
+    --gray-600: #6b6b6b;
+    --gray-700: #6e6e6e;
+    --gray-800: #4b4b4b;
+    --gray-900: #242424;
+
+    --font: 'Source Sans 3', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --mono: 'Source Code Pro', 'Fira Mono', 'Courier New', monospace;
+    --sidebar-width: 248px;
+    --content-max: 860px;
+    --header-h: 56px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  a { color: var(--et-purple-text); }
+
+  /* ── TOP NAV ── */
+  .topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--et-ink-alt);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 16px;
+    z-index: 100;
+  }
+  .topnav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+  .topnav-logo .mark {
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    background: var(--et-purple);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .topnav-divider { width: 1px; height: 20px; background: #3a3740; }
+  .topnav-title {
+    color: #d8d6dc;
+    font-size: 14px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topnav-badge {
+    margin-left: auto;
+    background: var(--et-purple);
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.04em;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; margin-top: var(--header-h); min-height: calc(100vh - var(--header-h)); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: var(--header-h);
+    height: calc(100vh - var(--header-h));
+    overflow-y: auto;
+    border-right: 1px solid var(--gray-200);
+    background: var(--gray-75);
+    padding: 24px 0 40px;
+  }
+  .sidebar-section { margin-bottom: 8px; }
+  .sidebar-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gray-600);
+    padding: 8px 20px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 20px;
+    font-size: 13px;
+    color: var(--gray-800);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: background 0.1s, color 0.1s, border-color 0.1s;
+  }
+  .sidebar-link:hover { background: var(--gray-200); color: var(--gray-900); }
+  .sidebar-link.active {
+    background: var(--et-pale-purple);
+    color: var(--et-purple-text);
+    border-left-color: var(--et-purple);
+    font-weight: 700;
+  }
+  .sidebar-link .icon { width: 16px; height: 16px; opacity: 0.6; flex-shrink: 0; }
+  .sidebar-link.active .icon { opacity: 1; }
+
+  /* ── MAIN ── */
+  .main { flex: 1; min-width: 0; padding: 48px 56px 80px; }
+  .main-inner { max-width: var(--content-max); }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 48px;
+    scroll-margin-top: calc(var(--header-h) + 48px);
+  }
+  .page-hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--et-purple-text);
+    margin-bottom: 8px;
+  }
+  .page-hero h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--et-ink);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .page-hero-sub { font-size: 16px; color: var(--gray-700); max-width: 640px; line-height: 1.5; }
+
+  /* ── SECTIONS ── */
+  .doc-section { margin-bottom: 56px; scroll-margin-top: calc(var(--header-h) + 24px); }
+  .doc-section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--et-ink);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  .section-rule { height: 1px; background: var(--gray-200); margin: 12px 0 24px; }
+  .doc-section h3 { font-size: 14px; font-weight: 700; color: var(--gray-900); margin: 24px 0 8px; }
+  .doc-section p { font-size: 14px; color: var(--gray-800); margin-bottom: 12px; line-height: 1.65; }
+
+  /* ── SECTION ICON BADGE ── */
+  .section-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-purple { background: var(--et-pale-purple); color: var(--et-purple); }
+  .icon-ink    { background: #ececee; color: var(--et-ink); }
+  .icon-green  { background: #eaf6f1; color: #268e6c; }
+  .icon-seafoam{ background: #e6f4f4; color: #16878c; }
+  .icon-orange { background: #fff4e5; color: #da7b11; }
+  .icon-blue   { background: #e9f1fc; color: #0d51b5; }
+
+  /* ── URL CARDS ── */
+  .url-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .url-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .url-card:hover { border-color: var(--et-purple); box-shadow: 0 0 0 1px var(--et-purple); }
+  .url-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .url-card-label .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .dot-purple { background: var(--et-purple); }
+  .dot-ink    { background: var(--et-ink); }
+  .dot-green  { background: #268e6c; }
+  .dot-orange { background: #da7b11; }
+  .url-card-title { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+  .url-card-url { font-size: 12px; font-family: var(--mono); color: var(--et-purple-text); word-break: break-all; }
+  .url-card-desc { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+
+  /* ── CODE BLOCKS ── */
+  .code-block {
+    background: var(--et-ink);
+    color: #d4d4d4;
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    overflow-x: auto;
+    margin: 8px 0 4px;
+    white-space: pre;
+  }
+  .code-block .cmt  { color: #6a9955; }
+  .code-block .str  { color: #ce9178; }
+  .code-block .kw   { color: #c7a6ff; }
+  .code-block .var  { color: #9cdcfe; }
+  .code-inline {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--gray-100);
+    border: 1px solid var(--gray-300);
+    color: var(--gray-900);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ── NOTICES ── */
+  .notice {
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 13px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .notice-icon { flex-shrink: 0; margin-top: 1px; }
+  .notice a { color: inherit; }
+  .notice.info     { background: var(--et-pale-purple); color: #3d1a9e; border-left: 3px solid var(--et-purple); }
+  .notice.tip      { background: #eaf6f1; color: #1a6b50; border-left: 3px solid #268e6c; }
+  .notice.warning  { background: #fff4e5; color: #8a4b08; border-left: 3px solid #da7b11; }
+
+  /* ── BLOCKS GRID ── */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .skill-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 14px 16px; }
+  .skill-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .skill-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+  .tag-js  { background: #fff8d6; color: #8a5e00; }
+  .tag-core{ background: var(--gray-100); color: var(--gray-700); }
+  .tag-poli{ background: var(--et-pale-purple); color: var(--et-purple-text); }
+  .tag-idle{ background: #fff4e5; color: #8a4b08; }
+  .skill-card-name { font-size: 13px; font-weight: 700; color: var(--gray-900); font-family: var(--mono); }
+  .skill-card-desc { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
+
+  /* ── PIPELINE DIAGRAM ── */
+  .arch-diagram { border: 1px solid var(--gray-200); border-radius: 8px; padding: 24px; background: var(--gray-75); margin: 16px 0; }
+  .arch-row { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; }
+  .arch-node { padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; text-align: center; min-width: 110px; }
+  .arch-arrow { font-size: 18px; color: var(--gray-400); }
+
+  /* ── TABLE ── */
+  .spec-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  .spec-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--gray-600);
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--gray-200);
+    background: var(--gray-75);
+  }
+  .spec-table td { padding: 9px 12px; border-bottom: 1px solid var(--gray-200); color: var(--gray-800); vertical-align: top; }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table td:first-child { font-weight: 700; color: var(--gray-900); }
+
+  /* ── STAT ROW ── */
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 16px 0; }
+  .stat-card { border: 1px solid var(--gray-200); border-radius: 8px; padding: 16px; background: var(--gray-75); }
+  .stat-num { font-size: 26px; font-weight: 700; color: var(--et-purple); line-height: 1.1; }
+  .stat-label { font-size: 12px; color: var(--gray-600); margin-top: 4px; }
+
+  /* ── SWATCHES ── */
+  .swatch-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 12px 0; }
+  .swatch { border: 1px solid var(--gray-200); border-radius: 8px; overflow: hidden; font-size: 12px; }
+  .swatch-chip { height: 44px; }
+  .swatch-meta { padding: 8px 10px; }
+  .swatch-meta strong { display: block; color: var(--gray-900); }
+  .swatch-meta code { font-family: var(--mono); color: var(--gray-600); }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    border-top: 1px solid var(--gray-200);
+    margin-top: 40px;
+    padding-top: 20px;
+    font-size: 12px;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .doc-footer a { text-decoration: none; }
+
+  /* ── STATUS PILLS ── */
+  .nav-status {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+  }
+  .ns-progress { background: #fff4e5; color: #8a4b08; }
+  .ns-planned  { background: var(--gray-200); color: var(--gray-600); }
+  .ns-done     { background: #eaf6f1; color: #1a6b50; }
+
+  .status-badge {
+    margin-left: auto;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 12px;
+    text-transform: uppercase;
+  }
+  .sb-progress { background: #fff4e5; color: #8a4b08; }
+  .sb-planned  { background: var(--gray-100); color: var(--gray-600); }
+  .sb-done     { background: #eaf6f1; color: #1a6b50; }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 4px 0; }
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    background: var(--gray-50);
+  }
+  .check-mark {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .check-mark svg { width: 12px; height: 12px; }
+  .cm-done    { background: #eaf6f1; color: #268e6c; }
+  .cm-partial { background: #fff4e5; color: #da7b11; }
+  .cm-todo    { background: var(--gray-100); color: var(--gray-500); }
+  .check-body { flex: 1; }
+  .check-title { font-weight: 700; font-size: 13px; color: var(--gray-900); }
+  .check-note  { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
+
+  .req-list { margin: 8px 0 0 18px; font-size: 13px; color: var(--gray-700); }
+  .req-list li { margin-bottom: 4px; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main { padding: 24px 20px 60px; }
+    .page-hero h1 { font-size: 24px; }
+    .url-grid { grid-template-columns: 1fr; }
+    .topnav-title { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a class="topnav-logo" href="#overview">
+    <span class="mark"><svg width="18" height="15" viewBox="0 0 30 25" aria-hidden="true"><path fill="#fff" d="M7.5 0 0 4.78l7.5 4.78L15 4.78zM22.5 0 15 4.78l7.5 4.78L30 4.78zM0 14.34l7.5 4.78L15 14.34l-7.5-4.78zM22.5 9.56 15 14.34l7.5 4.78 7.5-4.78zM7.5 20.71 15 25.5l7.5-4.79L15 15.93z"/></svg></span>
+    Dropbox
+  </a>
+  <div class="topnav-divider"></div>
+  <span class="topnav-title">dropbox.com → EDS Migration · Handoff Playbook</span>
+  <span class="topnav-badge">Handoff</span>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar" aria-label="Page navigation">
+<div class="sidebar-section">
+<div class="sidebar-label">Dropbox</div>
+<a class="sidebar-link active" href="#overview">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2h5v5H2zm7 0h5v5H9zM2 9h5v5H2zm7 0h5v5H9z"/></svg>
+  Overview
+</a>
+<a class="sidebar-link" href="#use-case">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.75A.75.75 0 012.75 2h7.5a.75.75 0 01.53.22l3 3a.75.75 0 01.22.53v7.5a.75.75 0 01-.75.75h-10.5a.75.75 0 01-.75-.75V2.75zM5 6.5a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 2.5a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 2.5a.5.5 0 000 1h4a.5.5 0 000-1H5z"/></svg>
+  Use case &amp; requirements
+</a>
+<a class="sidebar-link" href="#references">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"/></svg>
+  Key references
+</a>
+<a class="sidebar-link" href="#deliverables">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M4.5 2A2.5 2.5 0 002 4.5v7A2.5 2.5 0 004.5 14h7a2.5 2.5 0 002.5-2.5v-7A2.5 2.5 0 0011.5 2h-7zM5 5.5A.5.5 0 015.5 5h5a.5.5 0 010 1h-5A.5.5 0 015 5.5zm0 2.5a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5A.5.5 0 015 8zm.5 2a.5.5 0 000 1h3a.5.5 0 000-1h-3z"/></svg>
+  Deliverables
+</a>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-label">Site chrome <span class="nav-status ns-progress">In progress</span></div>
+<a class="sidebar-link" href="#header">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zm1.75-.25a.25.25 0 00-.25.25v.5h13v-.5a.25.25 0 00-.25-.25H1.75zM1.5 5.5v6.75c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.5h-13z"/></svg>
+  Header &amp; dropdowns
+</a>
+<a class="sidebar-link" href="#footer">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zM1.5 10.5v1.75c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V10.5h-13z"/></svg>
+  Footer
+</a>
+<a class="sidebar-link" href="#brand">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5A.5.5 0 013.5 2h9a.5.5 0 01.5.5V4a.5.5 0 01-1 0v-1H8.5v10H10a.5.5 0 010 1H6a.5.5 0 010-1h1.5V3H4v1a.5.5 0 01-1 0V2.5z"/></svg>
+  Brand design system
+</a>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-label">Content <span class="nav-status ns-done">Complete</span></div>
+<a class="sidebar-link" href="#import">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a.75.75 0 01.75.75v6.19l1.72-1.72a.75.75 0 111.06 1.06l-3 3a.75.75 0 01-1.06 0l-3-3a.75.75 0 011.06-1.06l1.72 1.72V1.75A.75.75 0 018 1zM2.75 12a.75.75 0 01.75.75v.75h9v-.75a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75h-11a.75.75 0 01-.75-.75v-1.5A.75.75 0 012.75 12z"/></svg>
+  Page import
+</a>
+<a class="sidebar-link" href="#templates">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75C0 1.784.784 1 1.75 1zM1.5 4v9.25c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V4h-13z"/></svg>
+  Page templates
+</a>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-label">Design <span class="nav-status ns-done">Complete</span></div>
+<a class="sidebar-link" href="#fidelity">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1 1 0 00-.115-.099zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/></svg>
+  Visual fidelity
+</a>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-label">Handoff</div>
+<a class="sidebar-link" href="#decisions">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4.5A2.5 2.5 0 014.5 2h7A2.5 2.5 0 0114 4.5v5a2.5 2.5 0 01-2.5 2.5H6.7l-3 2.4A.5.5 0 013 14v-2H4.5A2.5 2.5 0 012 9.5v-5z"/></svg>
+  Decisions &amp; assumptions
+</a>
+<a class="sidebar-link" href="#limitations">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM8 5a.75.75 0 00-.75.75v2.5a.75.75 0 001.5 0v-2.5A.75.75 0 008 5zm0 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+  Known limitations
+</a>
+<a class="sidebar-link" href="#next-steps">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 2.97a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06l2.97-2.97H3.75a.75.75 0 010-1.5h7.44L8.22 4.03a.75.75 0 010-1.06z"/></svg>
+  Next steps
+</a>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-label">Reference</div>
+<a class="sidebar-link" href="#blocks">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 012.5 2h2A1.5 1.5 0 016 3.5v2A1.5 1.5 0 014.5 7h-2A1.5 1.5 0 011 5.5v-2zm5.5 0A1.5 1.5 0 018 2h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 7H8A1.5 1.5 0 016.5 5.5v-2zm-5.5 5A1.5 1.5 0 012.5 7h2A1.5 1.5 0 016 8.5v2A1.5 1.5 0 014.5 12h-2A1.5 1.5 0 011 10.5v-2zm5.5 0A1.5 1.5 0 018 7h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 12H8A1.5 1.5 0 016.5 10.5v-2z"/></svg>
+  Block library
+</a>
+<a class="sidebar-link" href="#dev-notes">
+  <svg class="icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
+  Developer notes
+</a>
+</div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+<div class="main-inner">
+
+<div class="page-hero" id="overview">
+<div class="page-hero-eyebrow">Dropbox · Marketing Site Migration</div>
+<h1>Dropbox on Edge Delivery Services</h1>
+<p class="page-hero-sub">Rebuilding the <strong>dropbox.com</strong> marketing site on <strong>Adobe Edge Delivery Services</strong>. So far that means importing <strong>2 representative pages</strong> (the homepage and Dropbox Enterprise) across <strong>2 page templates</strong> into Document Authoring, building <strong>12 custom block variants</strong>, applying the Dropbox brand design system and rebuilding the production header with its dropdowns and language picker. This is the <strong>handoff playbook</strong>: what we gathered, what was built, the decisions and assumptions behind it, and what's left to finish.</p>
+</div>
+
+<section class="doc-section">
+<h2>
+  <span class="section-icon icon-ink">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 012.5 2h2A1.5 1.5 0 016 3.5v2A1.5 1.5 0 014.5 7h-2A1.5 1.5 0 011 5.5v-2zm5.5 0A1.5 1.5 0 018 2h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 7H8A1.5 1.5 0 016.5 5.5v-2zm-5.5 5A1.5 1.5 0 012.5 7h2A1.5 1.5 0 016 8.5v2A1.5 1.5 0 014.5 12h-2A1.5 1.5 0 011 10.5v-2zm5.5 0A1.5 1.5 0 018 7h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 12H8A1.5 1.5 0 016.5 10.5v-2z"/></svg>
+  </span>
+  Project overview
+</h2>
+<div class="section-rule"></div>
+<p>This effort recreates Dropbox's public <strong>marketing site</strong> on <strong>Adobe Edge Delivery Services (EDS)</strong>, authored through <strong>Document Authoring (DA)</strong>. The source is a React site built on Dropbox's own design system (<code class="code-inline">dwg-*</code> "plank" components). The target follows the EDS block-based model: every production component maps to an authorable block variant, and each page type has a repeatable import script.</p>
+<div class="stat-row">
+  <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">pages imported to DA</div></div>
+  <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">page templates</div></div>
+  <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">custom block variants</div></div>
+  <div class="stat-card"><div class="stat-num">12</div><div class="stat-label">import parsers</div></div>
+</div>
+<h3>Goals</h3>
+<ul class="req-list">
+  <li>Recreate the Dropbox marketing experience on <strong>Edge Delivery Services</strong>, authored in DA.</li>
+  <li>Identify the site’s <strong>page templates</strong> and import a representative page for each.</li>
+  <li>Model every production component (split hero, logo marquee, card grids, accordions, video, quote slider) as an <strong>authorable block</strong>, reusing variants across pages wherever the content model matches.</li>
+  <li>Match Dropbox’s <strong>brand identity</strong>: Dropbox blue, graphite and coconut surfaces, Sharp Grotesk / Atlas Grotesk type, header and dropdowns.</li>
+</ul>
+<h3>Approach</h3>
+<ul class="req-list">
+  <li>EDS <strong>block-based development only</strong>, with one block variant per production pattern (<code class="code-inline">hero-split</code>, <code class="code-inline">cards-integration</code>, …) and author-selectable options where only layout differs (<code class="code-inline">cards-integration (four-up)</code>).</li>
+  <li>Pages grouped into <strong>templates</strong>; each template gets a page-templates mapping, block parsers and an import script.</li>
+  <li>Design values read from the live site with <code class="code-inline">getComputedStyle</code>, then verified with side-by-side screenshots and per-section height comparisons.</li>
+  <li>Work lives on the <code class="code-inline">dropbox-homepage</code> branch, previewed at <a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">dropbox-homepage--dropbox--adobedrago.aem.page</code></a>.</li>
+</ul>
+</section>
+
+<section class="doc-section" id="use-case">
+<h2>
+  <span class="section-icon icon-ink">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.75A.75.75 0 012.75 2h7.5a.75.75 0 01.53.22l3 3a.75.75 0 01.22.53v7.5a.75.75 0 01-.75.75h-10.5a.75.75 0 01-.75-.75V2.75zM5 6.5a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 2.5a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 2.5a.5.5 0 000 1h4a.5.5 0 000-1H5z"/></svg>
+  </span>
+  Use case &amp; requirements
+</h2>
+<div class="section-rule"></div>
+<p><strong>Use case.</strong> Recreate Dropbox's marketing pages, the ones that sell Dropbox plans and products to individuals and businesses, on Edge Delivery Services, authored in Document Authoring. The work so far covers one representative page per template, plus the header and design system every future page will inherit.</p>
+<h3>Requirements gathered</h3>
+<table class="spec-table">
+<thead><tr><th>Area</th><th>What we found</th></tr></thead>
+<tbody>
+<tr><td>Source platform</td><td>React app with Dropbox’s design system: every band is a <code class="code-inline">dwg-plank-frame</code> "plank" directly under <code class="code-inline">#main-content</code>, themed with <code class="code-inline">dwg-theme--coconut</code> (beige), <code class="code-inline">--graphite</code> (dark) and <code class="code-inline">--coconut-200</code> (white).</td></tr>
+<tr><td>Pages in scope</td><td><code class="code-inline">/</code> (homepage) and <code class="code-inline">/enterprise</code>.</td></tr>
+<tr><td>Templates</td><td>2 distinct layouts: <strong>home</strong> and <strong>enterprise</strong>. See <a href="#templates">Page templates</a>.</td></tr>
+<tr><td>Visual language</td><td>Alternating beige (<code class="code-inline">#f7f5f2</code>), graphite (<code class="code-inline">#1e1919</code>) and white bands, Dropbox blue (<code class="code-inline">#0061fe</code>) CTAs with 16px radius, a rounded dark-gradient security panel, generous 72px vertical rhythm.</td></tr>
+<tr><td>Interactive components</td><td>Hover <strong>dropdown menus</strong> and a <strong>language modal</strong> in the header, auto-scrolling <strong>logo marquee</strong>, <strong>testimonial</strong> and <strong>quote sliders</strong>, a security <strong>accordion</strong> that swaps illustrations, and a <strong>Vimeo video</strong> behind a poster.</td></tr>
+<tr><td>Page noise</td><td>Cookie / CCPA consent iframe, Google One Tap container, tracking iframes, and A/B-test (Coframe) injections such as a sticky "Contact sales" bar (<code class="code-inline">#cf-sticky-cta-bar</code>) and empty <code class="code-inline">cf-*-mount</code> containers, all removed on import.</td></tr>
+</tbody>
+</table>
+<h3>Supporting analysis</h3>
+<p>Each page was analyzed for section boundaries and component patterns, then mapped to blocks with an 80% similarity threshold for reuse. Enterprise reused <code class="code-inline">hero-split</code> and <code class="code-inline">cards-integration</code> from the homepage instead of creating near-duplicates. Analysis artifacts (screenshots, cleaned HTML, page structure, authoring decisions) are kept under <code class="code-inline">migration-work/</code> (git-excluded).</p>
+</section>
+
+<section class="doc-section" id="references">
+<h2>
+  <span class="section-icon icon-purple">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"/></svg>
+  </span>
+  Key references
+</h2>
+<div class="section-rule"></div>
+<p>The four places the migration lives: the rendered preview, the authoring surface, the code, and the production site it's matched against.</p>
+<div class="url-grid">
+<a class="url-card" href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener">
+  <span class="url-card-label"><span class="dot dot-purple"></span>EDS Preview</span>
+  <span class="url-card-title">Homepage &amp; Enterprise (rendered)</span>
+  <span class="url-card-url">dropbox-homepage--dropbox--adobedrago.aem.page</span>
+  <span class="url-card-desc">The working branch rendered against DA content. Also <a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/enterprise">/enterprise</a>.</span>
+</a>
+<a class="url-card" href="https://da.live/#/adobedrago/dropbox" target="_blank" rel="noopener">
+  <span class="url-card-label"><span class="dot dot-ink"></span>Document Authoring</span>
+  <span class="url-card-title">adobedrago / dropbox</span>
+  <span class="url-card-url">da.live/#/adobedrago/dropbox</span>
+  <span class="url-card-desc">Where authors edit pages, the nav and the footer.</span>
+</a>
+<a class="url-card" href="https://github.com/AdobeDrago/dropbox/tree/dropbox-homepage" target="_blank" rel="noopener">
+  <span class="url-card-label"><span class="dot dot-green"></span>GitHub</span>
+  <span class="url-card-title">AdobeDrago/dropbox</span>
+  <span class="url-card-url">github.com/AdobeDrago/dropbox</span>
+  <span class="url-card-desc">Blocks, styles, import scripts and this playbook.</span>
+</a>
+<a class="url-card" href="https://www.dropbox.com/" target="_blank" rel="noopener">
+  <span class="url-card-label"><span class="dot dot-orange"></span>Production</span>
+  <span class="url-card-title">dropbox.com</span>
+  <span class="url-card-url">www.dropbox.com</span>
+  <span class="url-card-desc">The source of truth for content and visual fidelity.</span>
+</a>
+</div>
+</section>
+
+<section class="doc-section" id="deliverables">
+<h2>
+  <span class="section-icon icon-green">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>
+  </span>
+  Deliverables
+</h2>
+<div class="section-rule"></div>
+<p>What shipped, at a glance.</p>
+<ul class="checklist">
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Site analysis &amp; 2 page templates</div><div class="check-note">Homepage (15 source sections) and Enterprise (21 planks grouped into 11 authored sections), with DOM selectors for every section and block instance in <code class="code-inline">page-templates.json</code>.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Import infrastructure</div><div class="check-note">12 block parsers, 2 site-wide transformers (<code class="code-inline">dropbox-cleanup</code>, <code class="code-inline">dropbox-sections</code>) and 2 per-template import scripts.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">2 pages imported to DA</div><div class="check-note">Homepage (94.5% content completeness) and Enterprise (96.7%), both above the 90% threshold and previewed on the branch.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">12 custom block variants</div><div class="check-note">Split hero, logo marquee, two sliders, five card variants (one with a 4-column option), media accordion, alternating media rows, video embed and a closing CTA band.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Dropbox brand design system</div><div class="check-note"><code class="code-inline">styles/brand.css</code>: colour tokens, font stacks, 16px-radius buttons, beige / dark / dark-panel section styles and the 72px section rhythm, all extracted from production computed styles.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Production header (desktop)</div><div class="check-note">Logo, Products / Solutions / Get app dropdowns with full-width sheet and page dimming, plain links, language modal and the "Get started" CTA. Validated against the live site.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Header (mobile)</div><div class="check-note">A basic hamburger menu works below 1200px; the full mobile analysis and build is pending desktop sign-off. See <a href="#header">Header</a>.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Visual design pass</div><div class="check-note">Every block styled against production (estimated 90–97% match). Page heights are within ~2% of the source on both pages.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-todo"></span>
+  <div class="check-body"><div class="check-title">Footer</div><div class="check-note">Not migrated yet. See <a href="#footer">Footer</a>.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-todo"></span>
+  <div class="check-body"><div class="check-title">DA block library registration</div><div class="check-note">The new blocks aren’t yet registered in the DA Library panel.</div></div>
+</li>
+</ul>
+</section>
+
+<section class="doc-section" id="header">
+<h2>
+  <span class="section-icon icon-seafoam">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zm1.75-.25a.25.25 0 00-.25.25v.5h13v-.5a.25.25 0 00-.25-.25H1.75zM1.5 5.5v6.75c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V5.5h-13z"/></svg>
+  </span>
+  Header &amp; dropdowns <span class="status-badge sb-progress">Desktop complete</span>
+</h2>
+<div class="section-rule"></div>
+<p>The boilerplate nav was replaced with Dropbox's production header. It's authored as the <code class="code-inline">nav</code> document in DA and decorated by <code class="code-inline">blocks/header/</code>, so authors change menus without touching code. All copy and images live in the nav document; <code class="code-inline">header.js</code> only reads it and adds the interactive chrome.</p>
+<ul class="req-list">
+  <li><strong>Bar</strong>: 72px, solid white, fixed while scrolling. Logo, Products / Solutions / Business / Pricing on the left; language globe, Contact sales, Get app, Sign up, Log in and the blue "Get started" button on the right.</li>
+  <li><strong>Dropdowns</strong>: open on hover and toggle on click. <em>Products</em> is a 3×3 grid of icon cards with descriptions; <em>Solutions</em> has three labelled columns (Teams, Use cases, Industries); <em>Get app</em> is a two-link list. A full-width white sheet grows under the bar and the page dims to 50% graphite, as on production.</li>
+  <li><strong>Language picker</strong>: the globe opens a modal with all 23 languages in three columns.</li>
+  <li><strong>Geometry</strong>: trigger and panel positions match production within a few pixels (Products panel at 189 × 72, 720 × 308).</li>
+  <li><strong>Mobile</strong>: below 1200px a hamburger opens a stacked menu with accordion dropdowns. This is a placeholder until the mobile phase runs.</li>
+</ul>
+<div class="notice tip">
+  <svg class="notice-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 01-1.484.211c-.04-.282-.163-.547-.37-.847a8.695 8.695 0 00-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.75.75 0 01-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75zM6 15.25a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75zM5.75 12a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z"/></svg>
+  <span>The header loads the nav with a <strong>metadata-independent dual fetch</strong> (<code class="code-inline">/content/nav.plain.html</code> locally, then <code class="code-inline">/nav.plain.html</code> on DA/EDS), so it renders on every page. It also normalizes production markup, which wraps simple nav links in paragraphs and delivers images as <code class="code-inline">&lt;picture&gt;</code> elements.</span>
+</div>
+<h3>Validation</h3>
+<p>Desktop was validated with independent live comparisons against dropbox.com: panel content (3/3), computed CSS (10/10 elements), link content, panel layout, full visible text (50 phrases) and panel screenshots. The screenshot check caught a real bug: the full-width sheet was painting over the dropdown links once the bar became sticky. It was fixed by raising the nav's stacking order.</p>
+</section>
+
+<section class="doc-section" id="footer">
+<h2>
+  <span class="section-icon icon-seafoam">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 3.75C0 2.784.784 2 1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0114.25 14H1.75A1.75 1.75 0 010 12.25v-8.5zM1.5 10.5v1.75c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V10.5h-13z"/></svg>
+  </span>
+  Footer <span class="status-badge sb-planned">Planned</span>
+</h2>
+<div class="section-rule"></div>
+<p>The footer has not been migrated yet. The <code class="code-inline">footer</code> document in DA still holds the boilerplate content, and <code class="code-inline">blocks/footer/</code> is unchanged from the template.</p>
+<div class="notice warning">
+  <svg class="notice-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM8 5a.75.75 0 00-.75.75v2.5a.75.75 0 001.5 0v-2.5A.75.75 0 008 5zm0 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+  <span>Dropbox’s footer has six link columns (Dropbox, Products, Features, Support, Resources, Company), social links, and the legal / cookie-preference links. Migrate the copy verbatim, and keep the "Cookies &amp; CCPA preferences" link wired to a working consent mechanism.</span>
+</div>
+</section>
+
+<section class="doc-section" id="brand">
+<h2>
+  <span class="section-icon icon-purple">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3 2.5A.5.5 0 013.5 2h9a.5.5 0 01.5.5V4a.5.5 0 01-1 0v-1H8.5v10H10a.5.5 0 010 1H6a.5.5 0 010-1h1.5V3H4v1a.5.5 0 01-1 0V2.5z"/></svg>
+  </span>
+  Brand design system <span class="status-badge sb-done">Complete</span>
+</h2>
+<div class="section-rule"></div>
+<p>All brand tokens live in <code class="code-inline">styles/brand.css</code>, which <code class="code-inline">styles/styles.css</code> imports and maps onto the standard EDS variables (<code class="code-inline">--text-color</code>, <code class="code-inline">--link-color</code>, <code class="code-inline">--body-font-family</code>, …). Values were read from dropbox.com with <code class="code-inline">getComputedStyle</code>.</p>
+<div class="swatch-row">
+  <div class="swatch"><div class="swatch-chip" style="background:#0061fe"></div><div class="swatch-meta"><strong>Dropbox blue</strong><code>#0061fe</code></div></div>
+  <div class="swatch"><div class="swatch-chip" style="background:#0057e5"></div><div class="swatch-meta"><strong>Hover</strong><code>#0057e5</code></div></div>
+  <div class="swatch"><div class="swatch-chip" style="background:#1e1919"></div><div class="swatch-meta"><strong>Graphite / text</strong><code>#1e1919</code></div></div>
+  <div class="swatch"><div class="swatch-chip" style="background:#f7f5f2"></div><div class="swatch-meta"><strong>Coconut (beige)</strong><code>#f7f5f2</code></div></div>
+  <div class="swatch"><div class="swatch-chip" style="background:rgb(82 74 62 / 82%)"></div><div class="swatch-meta"><strong>Muted text</strong><code>rgb(82 74 62 / 82%)</code></div></div>
+  <div class="swatch"><div class="swatch-chip" style="background:#3984ff"></div><div class="swatch-meta"><strong>CTA on dark</strong><code>#3984ff</code></div></div>
+</div>
+<ul class="req-list">
+  <li><strong>Typefaces:</strong> Sharp Grotesk (headings), Sharp Grotesk 23 (section display headings) and Atlas Grotesk (body). They are licensed Dropbox fonts with no public CDN, so the stacks name them first and fall back to the system sans-serif.</li>
+  <li><strong>Type scale:</strong> 16px body. h1 32 → 40px; section display headings 24 → 32px; feature headings 26px / 500. Section intros sit in an 827px centred column.</li>
+  <li><strong>Sections:</strong> authors set <code class="code-inline">Style: light-beige</code>, <code class="code-inline">dark</code> or <code class="code-inline">dark-panel</code> (rounded graphite gradient) in Section Metadata. The import transformer does this automatically from the template.</li>
+  <li><strong>Rhythm:</strong> 72px above each section, 72px between a section intro and its block, and a 72px band in the upper colour where the background changes into a section that opens with an intro.</li>
+  <li><strong>Buttons:</strong> bold link → blue filled primary; italic link → outline secondary; 16px radius, 14px × 24px padding.</li>
+</ul>
+<div class="code-block"><span class="cmt">/* styles/brand.css — Dropbox brand tokens */</span>
+<span class="kw">:root</span> {
+  <span class="var">--brand-blue</span>: <span class="str">#0061fe</span>;
+  <span class="var">--graphite-color</span>: <span class="str">#1e1919</span>;
+  <span class="var">--coconut-color</span>: <span class="str">#f7f5f2</span>;
+  <span class="var">--heading-font-family</span>: <span class="str">"Sharp Grotesk", "Atlas Grotesk Web", …, sans-serif</span>;
+  <span class="var">--body-font-family</span>: <span class="str">"Atlas Grotesk Web", "Atlas Grotesk", …, sans-serif</span>;
+  <span class="var">--button-radius</span>: <span class="str">16px</span>;
+  <span class="var">--section-padding</span>: <span class="str">72px</span>;
+}</div>
+</section>
+
+<section class="doc-section" id="import">
+<h2>
+  <span class="section-icon icon-blue">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a.75.75 0 01.75.75v6.19l1.72-1.72a.75.75 0 111.06 1.06l-3 3a.75.75 0 01-1.06 0l-3-3a.75.75 0 011.06-1.06l1.72 1.72V1.75A.75.75 0 018 1zM2.75 12a.75.75 0 01.75.75v.75h9v-.75a.75.75 0 011.5 0v1.5a.75.75 0 01-.75.75h-11a.75.75 0 01-.75-.75v-1.5A.75.75 0 012.75 12z"/></svg>
+  </span>
+  Page import <span class="status-badge sb-done">Complete</span>
+</h2>
+<div class="section-rule"></div>
+<p>Each page is imported by its template's script in <code class="code-inline">tools/importer/</code>. The script cleans the source DOM, inserts section breaks and Section Metadata, then hands each matched component to its block parser. The resulting document goes to DA and is previewed.</p>
+<div class="arch-diagram">
+  <div class="arch-row">
+    <span class="arch-node" style="background:#fff4e5;color:#8a4b08;">live source page</span>
+    <span class="arch-arrow">→</span>
+    <span class="arch-node" style="background:#ececee;color:#1e1919;">dropbox-cleanup</span>
+    <span class="arch-arrow">→</span>
+    <span class="arch-node" style="background:#e6f4f4;color:#16878c;">dropbox-sections</span>
+    <span class="arch-arrow">→</span>
+    <span class="arch-node" style="background:#e6efff;color:#0050d0;">block parsers</span>
+    <span class="arch-arrow">→</span>
+    <span class="arch-node" style="background:#eaf6f1;color:#1a6b50;">DA + preview</span>
+  </div>
+</div>
+<h3>What was imported</h3>
+<table class="spec-table">
+<thead><tr><th>Page</th><th>Template</th><th>Completeness</th><th>Preview</th></tr></thead>
+<tbody>
+<tr><td>Homepage</td><td>home</td><td>94.5%</td><td><a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">/</code></a></td></tr>
+<tr><td>Dropbox Enterprise</td><td>enterprise</td><td>96.7%</td><td><a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/enterprise" target="_blank" rel="noopener"><code class="code-inline">/enterprise</code></a></td></tr>
+</tbody>
+</table>
+<h3>Cleanup rules</h3>
+<ul class="req-list">
+  <li>Removed before parsing: consent iframe, One Tap container, modal portals, skip link, A/B-test sticky CTA bar and empty experiment mounts.</li>
+  <li>Removed after parsing: global nav and footer, tracking iframes, scripts, the marquee pause control, and transparent <code class="code-inline">.mov</code> UI animations that have no poster.</li>
+  <li>Default-content CTAs are marked by style: primary → bold (filled button), outline → italic (outline button).</li>
+</ul>
+<div class="notice info">
+  <svg class="notice-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+  <span><strong>Images.</strong> Imported pages reference Dropbox’s image CDN (<code class="code-inline">fjord.dropboxstatic.com</code>). The EDS preview pipeline rejects SVGs over ~40KB, so for Enterprise nine large SVGs (security illustrations and app logos) were rasterized to PNG and, with one rate-limited photo, hosted in DA under <code class="code-inline">images/enterprise/</code>. The local import still points at the originals.</span>
+</div>
+</section>
+
+<section class="doc-section" id="templates">
+<h2>
+  <span class="section-icon icon-blue">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75C0 1.784.784 1 1.75 1zM1.5 4v9.25c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V4h-13z"/></svg>
+  </span>
+  Page templates <span class="status-badge sb-done">Complete</span>
+</h2>
+<div class="section-rule"></div>
+<p>Two templates cover the pages in scope. New Dropbox pages that match one of these layouts can be imported by adding their URL to the template and re-running its script.</p>
+<table class="spec-table">
+<thead><tr><th>Template</th><th>Layout</th><th>Blocks</th></tr></thead>
+<tbody>
+<tr><td>home</td><td>Split hero, logo marquee, AI integration cards, Find / Organize / Share features, dark security panel with testimonial slider, industry tiles, resource articles (15 sections)</td><td><code class="code-inline">hero-split</code> <code class="code-inline">carousel-logos</code> <code class="code-inline">cards-integration</code> <code class="code-inline">carousel-testimonial</code> <code class="code-inline">cards-industry</code> <code class="code-inline">cards-article</code></td></tr>
+<tr><td>enterprise</td><td>Split hero with screenshot, G2 badges, security accordion, alternating media rows, feature / integration / ROI / stat grids, Vimeo video, quote slider, closing CTA band (11 sections)</td><td><code class="code-inline">hero-split</code> <code class="code-inline">cards-badge</code> <code class="code-inline">accordion-media</code> <code class="code-inline">columns-media</code> <code class="code-inline">cards-integration (four-up)</code> <code class="code-inline">embed-video</code> <code class="code-inline">carousel-quote</code> <code class="code-inline">columns-cta</code></td></tr>
+</tbody>
+</table>
+<div class="notice tip">
+  <svg class="notice-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 01-1.484.211c-.04-.282-.163-.547-.37-.847a8.695 8.695 0 00-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.75.75 0 01-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75zM6 15.25a.75.75 0 01.75-.75h2.5a.75.75 0 010 1.5h-2.5a.75.75 0 01-.75-.75zM5.75 12a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5z"/></svg>
+  <span>Enterprise section selectors use the source plank IDs (e.g. <code class="code-inline">#dwg_headline_plank-3b127dce19</code>), which are stable for this page. Other pages need their own selectors or a class-based fallback.</span>
+</div>
+</section>
+
+<section class="doc-section" id="fidelity">
+<h2>
+  <span class="section-icon icon-orange">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1 1 0 00-.115-.099zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/></svg>
+  </span>
+  Visual fidelity <span class="status-badge sb-done">Complete</span>
+</h2>
+<div class="section-rule"></div>
+<p>After the brand layer went on, each block was styled against production by measuring the live page, then whole pages were compared side by side and section by section. Every value comes from production's computed styles.</p>
+<table class="spec-table">
+<thead><tr><th>Page</th><th>Height (source → migrated)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Homepage</td><td>8,595 → 8,670px</td><td>All sections and blocks aligned; feature images centred (their animated overlays were dropped).</td></tr>
+<tr><td>Enterprise</td><td>7,489 → 7,361px</td><td>8 blocks at an estimated 90–97% match; photos bleed to the viewport edge as on production.</td></tr>
+</tbody>
+</table>
+<h3>Page-level fixes from the comparison</h3>
+<ul class="req-list">
+  <li><strong>Intro gap:</strong> 72px between a section’s heading / intro and the block that follows (card grids had only 4–16px).</li>
+  <li><strong>Colour bands:</strong> at a background change, the section above keeps a 72px band in its own colour, because production planks carry a 72px margin painted in the upper colour.</li>
+  <li><strong>Heading column:</strong> section headings and intro text sit in production’s 827px column instead of running full width.</li>
+  <li><strong>No horizontal scroll:</strong> <code class="code-inline">main</code> uses <code class="code-inline">overflow-x: clip</code> so full-bleed media can never cause sideways scrolling.</li>
+</ul>
+</section>
+
+<section class="doc-section" id="decisions">
+<h2>
+  <span class="section-icon icon-purple">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2 4.5A2.5 2.5 0 014.5 2h7A2.5 2.5 0 0114 4.5v5a2.5 2.5 0 01-2.5 2.5H6.7l-3 2.4A.5.5 0 013 14v-2H4.5A2.5 2.5 0 012 9.5v-5z"/></svg>
+  </span>
+  Decisions &amp; assumptions <span class="status-badge sb-done">Handoff</span>
+</h2>
+<div class="section-rule"></div>
+<p>The choices behind the build. Read these before extending the work.</p>
+<table class="spec-table">
+<thead><tr><th>Decision</th><th>Rationale / assumption</th></tr></thead>
+<tbody>
+<tr><td>Reuse before new variants</td><td>Enterprise reused <code class="code-inline">hero-split</code> and <code class="code-inline">cards-integration</code> rather than creating near-duplicates. Layout-only differences became an author option (<code class="code-inline">four-up</code>); shared parsers were checked to produce byte-identical homepage output.</td></tr>
+<tr><td>Design values from computed styles</td><td>Colours, sizes and spacing were measured on the live site. Block passes kept the homepage pixel-identical when shared blocks changed.</td></tr>
+<tr><td>Section styles via Section Metadata</td><td>Backgrounds are section styles (<code class="code-inline">light-beige</code>, <code class="code-inline">dark</code>, <code class="code-inline">dark-panel</code>), not baked into blocks. Production applies Section Metadata server-side; a small client-side fallback in <code class="code-inline">scripts.js</code> covers the local preview and does nothing when the server has already applied it.</td></tr>
+<tr><td>System font fallback</td><td>Sharp Grotesk and Atlas Grotesk are licensed and not available on Adobe Fonts or Google Fonts. The stacks name them first, so self-hosting the licensed files later needs no CSS changes.</td></tr>
+<tr><td>Content-first header</td><td>All nav copy, links and icons live in the DA nav document; the header code reads it generically (no site-specific functions), so menus are edited by authors.</td></tr>
+<tr><td>Desktop nav from 1200px</td><td>Production hides its triggers below roughly 1280px. The project’s allowed breakpoints are 600 / 900 / 1200, so 1200 was used. A few blocks use production’s own 480 / 1024 breakpoints where layouts depend on them.</td></tr>
+<tr><td>Language picker as UI only</td><td>Dropbox switches locale with a script, and the URL parameter has no effect. The modal and all 23 languages are migrated, but selecting one only closes it until localized pages exist.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="doc-section" id="limitations">
+<h2>
+  <span class="section-icon icon-orange">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM8 5a.75.75 0 00-.75.75v2.5a.75.75 0 001.5 0v-2.5A.75.75 0 008 5zm0 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+  </span>
+  Known limitations &amp; accepted quirks <span class="status-badge sb-progress">Review</span>
+</h2>
+<div class="section-rule"></div>
+<p>Accepted for this delivery. Each one is a candidate for follow-up before production.</p>
+<ul class="checklist">
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Mobile header not built</div><div class="check-note">Below 1200px the header uses a basic placeholder hamburger menu. The mobile phase (analysis, slide/accordion behaviour, width checks) is waiting on desktop sign-off.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Footer is still the boilerplate</div><div class="check-note">See <a href="#footer">Footer</a>.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Code not yet on main</div><div class="check-note">All work is on <code class="code-inline">dropbox-homepage</code>. Use the branch preview until the PR is merged. Note that DA content is shared: the <code class="code-inline">index</code> and <code class="code-inline">nav</code> documents were replaced with migrated content, but main’s preview still shows the old previewed copies until main is re-previewed.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Fallback fonts</div><div class="check-note">Headings wrap differently and weight-500 text renders lighter than production until the licensed fonts are self-hosted.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Testimonial CTAs are plain text</div><div class="check-note">"Watch testimonial" / "Watch webinar" open a modal video on production and have no URL. Authors need to add video links to make them clickable.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Media trade-offs</div><div class="check-note">Homepage UI animations (transparent .mov) were dropped; the security panel shows only its main product image. App-integration cards on Enterprise are two 4-card blocks rather than one 8-card block.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-partial"></span>
+  <div class="check-body"><div class="check-title">Images on Dropbox’s CDN</div><div class="check-note">Most images still load from <code class="code-inline">fjord.dropboxstatic.com</code>, which rate-limits heavy traffic. Consider moving all media into DA before go-live.</div></div>
+</li>
+</ul>
+</section>
+
+<section class="doc-section" id="next-steps">
+<h2>
+  <span class="section-icon icon-green">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 2.97a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06l2.97-2.97H3.75a.75.75 0 010-1.5h7.44L8.22 4.03a.75.75 0 010-1.06z"/></svg>
+  </span>
+  Next steps
+</h2>
+<div class="section-rule"></div>
+<p>Suggested order to finish the migration:</p>
+<ul class="req-list">
+  <li><strong>Sign off desktop header</strong>, then run the mobile header phase.</li>
+  <li><strong>Migrate the footer</strong>, including the legal and cookie-preference links.</li>
+  <li><strong>Register the new blocks</strong> in the DA Library so authors can insert them.</li>
+  <li><strong>Self-host the Dropbox fonts</strong> once licensing is confirmed.</li>
+  <li><strong>Open the PR</strong> from <code class="code-inline">dropbox-homepage</code> with the branch preview links, merge to <code class="code-inline">main</code>, then re-preview and publish content separately.</li>
+  <li><strong>Scale out</strong>: discover the rest of the marketing site’s URLs, classify them against the 2 templates (adding templates where needed), and bulk-import the matches.</li>
+</ul>
+</section>
+
+<section class="doc-section" id="blocks">
+<h2>
+  <span class="section-icon icon-ink">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1 3.5A1.5 1.5 0 012.5 2h2A1.5 1.5 0 016 3.5v2A1.5 1.5 0 014.5 7h-2A1.5 1.5 0 011 5.5v-2zm5.5 0A1.5 1.5 0 018 2h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 7H8A1.5 1.5 0 016.5 5.5v-2zm-5.5 5A1.5 1.5 0 012.5 7h2A1.5 1.5 0 016 8.5v2A1.5 1.5 0 014.5 12h-2A1.5 1.5 0 011 10.5v-2zm5.5 0A1.5 1.5 0 018 7h2a1.5 1.5 0 011.5 1.5v2A1.5 1.5 0 0110 12H8A1.5 1.5 0 016.5 10.5v-2z"/></svg>
+  </span>
+  Block library
+</h2>
+<div class="section-rule"></div>
+<h3>Custom blocks built for Dropbox</h3>
+<p>12 net-new block variants, each with brand styling and a matching import parser.</p>
+<div class="skills-grid">
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">hero-split</span></div><div class="skill-card-desc">Split hero: h1, copy and CTAs beside product media. Video media on Home; eyebrow + screenshot layout on Enterprise.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">carousel-logos</span></div><div class="skill-card-desc">Continuously scrolling customer-logo strip with pause control; pauses on hover and for reduced motion.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">carousel-testimonial</span></div><div class="skill-card-desc">Horizontal slider of testimonial / webinar cards with thumbnail, eyebrow and quote, inside the dark security panel.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">cards-integration</span></div><div class="skill-card-desc">Icon (optional) + h3 + text + link grid. 3 columns by default; the <code class="code-inline">four-up</code> option gives 4 columns. Used 7 times across both pages.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">cards-industry</span></div><div class="skill-card-desc">Image-left horizontal industry tiles, 2 columns, whole tile clickable.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">cards-article</span></div><div class="skill-card-desc">Image-top article cards with eyebrow and "Read article" link.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">cards-badge</span></div><div class="skill-card-desc">G2 badge tiles on black squares with heading and text, 4 columns.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">accordion-media</span></div><div class="skill-card-desc">One-open-at-a-time accordion whose open item shows its illustration in a right-hand panel.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">columns-media</span></div><div class="skill-card-desc">Alternating photo / text rows with photos bleeding to the viewport edge.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">embed-video</span></div><div class="skill-card-desc">Poster with Dropbox play icon; loads the Vimeo (or YouTube) player on click.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">carousel-quote</span></div><div class="skill-card-desc">Text-only customer quote slider with 01 / 03 counter and wrapping arrows.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-js">custom</span><span class="skill-card-name">columns-cta</span></div><div class="skill-card-desc">Closing dark band: large heading left, "Contact sales" button right.</div></div>
+</div>
+<h3>Core blocks</h3>
+<div class="skills-grid">
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-core">core</span><span class="skill-card-name">header</span></div><div class="skill-card-desc">Rebuilt: content-driven Dropbox nav with dropdown panels, sheet, overlay and language modal.</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-core">core</span><span class="skill-card-name">footer</span></div><div class="skill-card-desc">Boilerplate (not yet migrated).</div></div>
+<div class="skill-card"><div class="skill-card-header"><span class="skill-tag tag-core">core</span><span class="skill-card-name">fragment</span></div><div class="skill-card-desc">Boilerplate fragment loader.</div></div>
+</div>
+</section>
+
+<section class="doc-section" id="dev-notes">
+<h2>
+  <span class="section-icon icon-orange">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>
+  </span>
+  Developer notes
+</h2>
+<div class="section-rule"></div>
+<h3>Run it locally</h3>
+<div class="code-block"><span class="cmt"># local code, previewed content</span>
+npx -y @adobe/aem-cli up
+<span class="cmt"># → http://localhost:3000/  (imported pages are served under /content/ in this workspace)</span>
+
+<span class="cmt"># inspect the markup a block receives</span>
+curl -s http://localhost:3000/content/enterprise.plain.html</div>
+<h3>Block CSS conventions</h3>
+<p>Keep block CSS scoped to <code class="code-inline">.blockname</code>; treat <code class="code-inline">-wrapper</code> / <code class="code-inline">-container</code> as section classes. Where a block needs spacing that depends on what precedes it (e.g. the 72px intro gap), use <code class="code-inline">.default-content-wrapper + .x-wrapper > .x</code> so the styled element is still the block. Authors can omit or add cells, so decorators target content by shape (picture, heading, link) rather than fixed positions.</p>
+<h3>Shared blocks</h3>
+<p><code class="code-inline">hero-split</code> and <code class="code-inline">cards-integration</code> are used by both templates. Before changing either, capture the homepage before and after: the Enterprise work kept it byte-identical.</p>
+<h3>Re-running an import</h3>
+<p>Add URLs to the matching <code class="code-inline">tools/importer/urls-*.txt</code> (or the template in <code class="code-inline">page-templates.json</code>), bundle the template's <code class="code-inline">import-*.js</code> and run the bulk importer. Generated <code class="code-inline">*.bundle.js</code> files and reports are not committed.</p>
+<div class="notice warning">
+  <svg class="notice-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM8 5a.75.75 0 00-.75.75v2.5a.75.75 0 001.5 0v-2.5A.75.75 0 008 5zm0 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+  <span>Before uploading imported pages to DA, check for SVGs over ~40KB and for images the CDN rate-limited (the preview step fails with <code class="code-inline">AEM_BACKEND_FETCH_FAILED</code> / "failed validation"). Rasterize or rehost those images in DA.</span>
+</div>
+</section>
+
+</div>
+</main>
+</div>
+
+<script>
+  // Highlight the sidebar link for the section currently in view.
+  const links = [...document.querySelectorAll('.sidebar-link')];
+  const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const link = byId.get(entry.target.id);
+        if (!link) return;
+        links.forEach((a) => a.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  document.querySelectorAll('.doc-section, .page-hero').forEach((s) => { if (s.id) observer.observe(s); });
+</script>
+
+</body>
+</html>
