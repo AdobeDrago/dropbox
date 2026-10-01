@@ -572,7 +572,7 @@
   <li>EDS <strong>block-based development only</strong>, with one block variant per production pattern (<code class="code-inline">hero-split</code>, <code class="code-inline">cards-integration</code>, …) and author-selectable options where only layout differs (<code class="code-inline">cards-integration (four-up)</code>).</li>
   <li>Pages grouped into <strong>templates</strong>; each template gets a page-templates mapping, block parsers and an import script.</li>
   <li>Design values read from the live site with <code class="code-inline">getComputedStyle</code>, then verified with side-by-side screenshots and per-section height comparisons.</li>
-  <li>Work lives on the <code class="code-inline">dropbox-homepage</code> branch, previewed at <a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">dropbox-homepage--dropbox--adobedrago.aem.page</code></a>.</li>
+  <li>Work was built on the <code class="code-inline">dropbox-homepage</code> branch and merged to <code class="code-inline">main</code> (PRs #1 and #2), previewed at <a href="https://main--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">main--dropbox--adobedrago.aem.page</code></a>.</li>
 </ul>
 </section>
 
@@ -611,11 +611,11 @@
 <div class="section-rule"></div>
 <p>The four places the migration lives: the rendered preview, the authoring surface, the code, and the production site it's matched against.</p>
 <div class="url-grid">
-<a class="url-card" href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener">
+<a class="url-card" href="https://main--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener">
   <span class="url-card-label"><span class="dot dot-purple"></span>EDS Preview</span>
   <span class="url-card-title">Homepage &amp; Enterprise (rendered)</span>
-  <span class="url-card-url">dropbox-homepage--dropbox--adobedrago.aem.page</span>
-  <span class="url-card-desc">The working branch rendered against DA content. Also <a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/enterprise">/enterprise</a>.</span>
+  <span class="url-card-url">main--dropbox--adobedrago.aem.page</span>
+  <span class="url-card-desc">Main rendered against DA content. Enterprise is at /enterprise.</span>
 </a>
 <a class="url-card" href="https://da.live/#/adobedrago/dropbox" target="_blank" rel="noopener">
   <span class="url-card-label"><span class="dot dot-ink"></span>Document Authoring</span>
@@ -623,7 +623,7 @@
   <span class="url-card-url">da.live/#/adobedrago/dropbox</span>
   <span class="url-card-desc">Where authors edit pages, the nav and the footer.</span>
 </a>
-<a class="url-card" href="https://github.com/AdobeDrago/dropbox/tree/dropbox-homepage" target="_blank" rel="noopener">
+<a class="url-card" href="https://github.com/AdobeDrago/dropbox" target="_blank" rel="noopener">
   <span class="url-card-label"><span class="dot dot-green"></span>GitHub</span>
   <span class="url-card-title">AdobeDrago/dropbox</span>
   <span class="url-card-url">github.com/AdobeDrago/dropbox</span>
@@ -658,7 +658,11 @@
 </li>
 <li class="check-item">
   <span class="check-mark cm-done"></span>
-  <div class="check-body"><div class="check-title">2 pages imported to DA</div><div class="check-note">Homepage (94.5% content completeness) and Enterprise (96.7%), both above the 90% threshold and previewed on the branch.</div></div>
+  <div class="check-body"><div class="check-title">2 pages imported to DA</div><div class="check-note">Homepage (94.5% content completeness) and Enterprise (96.7%), both above the 90% threshold and previewed.</div></div>
+</li>
+<li class="check-item">
+  <span class="check-mark cm-done"></span>
+  <div class="check-body"><div class="check-title">Merged to main</div><div class="check-note">Code merged from <code class="code-inline">dropbox-homepage</code> via PRs #1 (homepage + header) and #2 (Enterprise).</div></div>
 </li>
 <li class="check-item">
   <span class="check-mark cm-done"></span>
@@ -792,8 +796,8 @@
 <table class="spec-table">
 <thead><tr><th>Page</th><th>Template</th><th>Completeness</th><th>Preview</th></tr></thead>
 <tbody>
-<tr><td>Homepage</td><td>home</td><td>94.5%</td><td><a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">/</code></a></td></tr>
-<tr><td>Dropbox Enterprise</td><td>enterprise</td><td>96.7%</td><td><a href="https://dropbox-homepage--dropbox--adobedrago.aem.page/enterprise" target="_blank" rel="noopener"><code class="code-inline">/enterprise</code></a></td></tr>
+<tr><td>Homepage</td><td>home</td><td>94.5%</td><td><a href="https://main--dropbox--adobedrago.aem.page/" target="_blank" rel="noopener"><code class="code-inline">/</code></a></td></tr>
+<tr><td>Dropbox Enterprise</td><td>enterprise</td><td>96.7%</td><td><a href="https://main--dropbox--adobedrago.aem.page/enterprise" target="_blank" rel="noopener"><code class="code-inline">/enterprise</code></a></td></tr>
 </tbody>
 </table>
 <h3>Cleanup rules</h3>
@@ -898,7 +902,7 @@
 </li>
 <li class="check-item">
   <span class="check-mark cm-partial"></span>
-  <div class="check-body"><div class="check-title">Code not yet on main</div><div class="check-note">All work is on <code class="code-inline">dropbox-homepage</code>. Use the branch preview until the PR is merged. Note that DA content is shared: the <code class="code-inline">index</code> and <code class="code-inline">nav</code> documents were replaced with migrated content, but main’s preview still shows the old previewed copies until main is re-previewed.</div></div>
+  <div class="check-body"><div class="check-title">Content not yet published</div><div class="check-note">Pages, nav and footer are previewed but not published to the live site. Publish from DA (or the Sidekick) once reviewed.</div></div>
 </li>
 <li class="check-item">
   <span class="check-mark cm-partial"></span>
@@ -933,7 +937,7 @@
   <li><strong>Migrate the footer</strong>, including the legal and cookie-preference links.</li>
   <li><strong>Register the new blocks</strong> in the DA Library so authors can insert them.</li>
   <li><strong>Self-host the Dropbox fonts</strong> once licensing is confirmed.</li>
-  <li><strong>Open the PR</strong> from <code class="code-inline">dropbox-homepage</code> with the branch preview links, merge to <code class="code-inline">main</code>, then re-preview and publish content separately.</li>
+  <li><strong>Publish content</strong> (index, enterprise, nav, footer) from DA once reviewed; code is already on main.</li>
   <li><strong>Scale out</strong>: discover the rest of the marketing site’s URLs, classify them against the 2 templates (adding templates where needed), and bulk-import the matches.</li>
 </ul>
 </section>
