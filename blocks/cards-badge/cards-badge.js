@@ -1,7 +1,6 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-// four-up: 4 columns on desktop (default stays 3-up)
-const OPTION_CLASSES = ['four-up'];
+const OPTION_CLASSES = [];
 
 // the EDS image service only resizes same-origin (media bus) images;
 // external URLs are kept as authored
@@ -27,35 +26,29 @@ export default function decorate(block) {
     if (!cells.some((c) => c.textContent.trim() || c.querySelector('img'))) return;
 
     const li = document.createElement('li');
-    li.className = 'cards-integration-card';
-    const icon = document.createElement('div');
-    icon.className = 'cards-integration-card-icon';
+    li.className = 'cards-badge-card';
+    const image = document.createElement('div');
+    image.className = 'cards-badge-card-image';
     const body = document.createElement('div');
-    body.className = 'cards-integration-card-body';
+    body.className = 'cards-badge-card-body';
 
     cells.forEach((cell) => {
-      if (isImageOnly(cell) && !icon.children.length) {
-        while (cell.firstChild) icon.append(cell.firstChild);
+      if (isImageOnly(cell) && !image.children.length) {
+        while (cell.firstChild) image.append(cell.firstChild);
       } else {
         while (cell.firstChild) body.append(cell.firstChild);
       }
     });
 
-    // an icon authored inside the text cell (single-cell rows) is lifted out
-    if (!icon.children.length) {
+    // a badge authored inside the text cell (single-cell rows) is lifted out
+    if (!image.children.length) {
       const first = body.firstElementChild;
-      if (first && first.querySelector('picture, img') && !first.textContent.trim()) icon.append(first);
+      if (first && first.querySelector('picture, img') && !first.textContent.trim()) image.append(first);
     }
 
-    // last link-only paragraph is the card's call to action
-    const paras = [...body.querySelectorAll(':scope > p')];
-    const cta = paras.reverse().find((p) => p.querySelector('a') && p.textContent.trim() === p.querySelector('a').textContent.trim());
-    if (cta) cta.classList.add('cards-integration-card-cta');
-
-    if (icon.children.length) li.append(icon);
-    // text-only items (e.g. stat cards: H3 headline + paragraph) carry no icon frame
-    else li.classList.add('cards-integration-card-no-icon');
-    li.append(body);
+    if (image.children.length) li.append(image);
+    else li.classList.add('cards-badge-card-no-image');
+    if (body.children.length || body.textContent.trim()) li.append(body);
     ul.append(li);
   });
 
@@ -64,7 +57,7 @@ export default function decorate(block) {
       img.setAttribute('loading', 'lazy');
       return;
     }
-    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '96' }]));
+    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '400' }]));
   });
   block.replaceChildren(ul);
 }

@@ -1,0 +1,24 @@
+{
+  "variantName": "accordion-media",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "moderate",
+    "purpose": "feature-accordion",
+    "imagePattern": "image-swap-right",
+    "structure": "title + paragraph + link + image"
+  },
+  "contentPattern": "3 rows: [title text | paragraph, 'Learn more' link, illustration image]",
+  "usage": {
+    "pagesUsing": [
+      "https://www.dropbox.com/enterprise"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": [
+    "accordion-media"
+  ]
+}

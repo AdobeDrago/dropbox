@@ -1,0 +1,194 @@
+/* alternating full-bleed photo + text planks (dropbox.com/enterprise "dwg-media-text-plank").
+   Values extracted from the source; layout follows the source 26-column flex grid:
+   < 1024px stacked (text, then photo), 1024-1279px 50/50, >= 1280px photo 16/26 + text 8/26
+   (text capped at 492px, remaining space on the text's outer side). */
+.columns-media {
+  /* distance from the section content edge to the viewport edge (section wrapper is a
+     content-box capped at --content-max-width and padded 24px / 48px outside that width);
+     rows extend by this much on both sides to run edge to edge */
+  --columns-media-bleed: 24px;
+  --columns-media-photo-bg: rgb(192 187 180);
+}
+
+/* source: 72px between the section heading and the first plank
+   (collapses with the heading's own bottom margin) */
+.default-content-wrapper + .columns-media-wrapper > .columns-media {
+  margin-top: 72px;
+}
+
+.columns-media .columns-media-row {
+  display: flex;
+  flex-direction: column;
+  margin-inline: calc(-1 * var(--columns-media-bleed));
+  background-color: var(--coconut-color);
+}
+
+/* text */
+.columns-media .columns-media-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 72px 24px 48px;
+  background-color: var(--coconut-color);
+  color: var(--text-color);
+}
+
+.columns-media .columns-media-text > * {
+  margin: 0;
+}
+
+.columns-media .columns-media-text .columns-media-eyebrow {
+  margin-bottom: 16px;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.columns-media .columns-media-text h2 {
+  margin-bottom: 16px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-size-l, 20px);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+.columns-media .columns-media-text p {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* the source separates body paragraphs with an empty spacer paragraph (16 + 24 + 16) */
+.columns-media .columns-media-text p:not(.columns-media-eyebrow, .button-wrapper) + p:not(.button-wrapper) {
+  margin-top: 56px;
+}
+
+/* outline CTA, "large" size with trailing arrow */
+.columns-media .columns-media-text p.button-wrapper {
+  margin-top: 32px;
+}
+
+main .columns-media a.button:any-link {
+  gap: 24px;
+  padding: 24px;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+main .columns-media a.button:any-link::after {
+  content: "";
+  flex: none;
+  width: 24px;
+  height: 24px;
+
+  /* icon is 24px but does not add to the 19.2px line box, as on the source */
+  margin-block: -2.4px;
+  background-color: currentcolor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23000' stroke-miterlimit='10' stroke-width='1.5' d='M5 11.75h12m-5.25-6.5 6.25 6.5-6.25 6.5'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+/* photo: below the text on small screens, edge to edge */
+.columns-media .columns-media-media {
+  position: relative;
+  order: 1;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background-color: var(--columns-media-photo-bg);
+}
+
+.columns-media .columns-media-media picture,
+.columns-media .columns-media-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+.columns-media .columns-media-row-text-only .columns-media-media {
+  display: none;
+}
+
+@media (width >= 768px) {
+  .columns-media .columns-media-text {
+    padding: 72px 48px 48px;
+  }
+
+  .columns-media .columns-media-media {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (width >= 900px) {
+  .columns-media {
+    --columns-media-bleed: max(48px, calc((100vw - var(--content-max-width, 1344px)) / 2));
+  }
+}
+
+/* side by side, 720px tall planks; the photo fills its column */
+@media (width >= 1024px) {
+  .columns-media .columns-media-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 720px;
+  }
+
+  .columns-media .columns-media-text {
+    padding: 72px 48px;
+  }
+
+  .columns-media .columns-media-media {
+    order: 0;
+    aspect-ratio: auto;
+  }
+
+  .columns-media .columns-media-media picture {
+    position: absolute;
+    inset: 0;
+  }
+
+  .columns-media .columns-media-row-text-only {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (width >= 1280px) {
+  .columns-media .columns-media-row-media-start {
+    grid-template-columns: calc(16 / 26 * 100%) min(calc(8 / 26 * 100%), 492px) minmax(0, 1fr);
+  }
+
+  .columns-media .columns-media-row-media-end {
+    grid-template-columns: minmax(0, 1fr) min(calc(8 / 26 * 100%), 492px) calc(16 / 26 * 100%);
+  }
+
+  .columns-media .columns-media-row-media-start .columns-media-media {
+    grid-column: 1;
+  }
+
+  .columns-media .columns-media-row-media-start .columns-media-text,
+  .columns-media .columns-media-row-media-end .columns-media-text {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  .columns-media .columns-media-row-media-end .columns-media-media {
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  .columns-media .columns-media-row-text-only .columns-media-text {
+    grid-column: 1;
+    max-width: 492px;
+  }
+}
+
+@media (width >= 1440px) {
+  .columns-media .columns-media-text h2 {
+    font-size: 24px;
+  }
+}

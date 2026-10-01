@@ -45,7 +45,6 @@
           ]
         }
       ],
-      "urlPattern": "/",
       "sections": [
         {
           "id": "rc1",
@@ -237,6 +236,238 @@
           "defaultContent": [
             "p"
           ]
+        }
+      ],
+      "urlPattern": "/"
+    },
+    {
+      "name": "enterprise",
+      "urls": [
+        "https://www.dropbox.com/enterprise"
+      ],
+      "representativeUrl": "https://www.dropbox.com/enterprise",
+      "description": "Dropbox Enterprise product page: split hero, G2 badge cards, security accordion with media, alternating media/text rows, feature/integration/stat card grids, Vimeo video, quote slider, closing CTA band",
+      "blocks": [
+        {
+          "name": "hero-split",
+          "instances": [
+            ".dwg-hero-l3-plank > .dwg-plank-frame__inner > .dwg-flex-grid"
+          ]
+        },
+        {
+          "name": "cards-badge",
+          "instances": [
+            "#dwg_multi_block_plank-adfdcc8096 .dwg-multi-block__grid"
+          ]
+        },
+        {
+          "name": "accordion-media",
+          "instances": [
+            ".dwg-jtbd-plank"
+          ]
+        },
+        {
+          "name": "columns-media",
+          "instances": [
+            "#dwg_media_text_plank-2612c7b4e4"
+          ]
+        },
+        {
+          "name": "cards-integration",
+          "instances": [
+            "#dwg_multi_block_plank-7620d115ea .dwg-multi-block__grid",
+            "#dwg_multi_block_plank-adca18c2cd .dwg-multi-block__grid",
+            "#dwg_multi_block_plank-b22b0f59a7 .dwg-multi-block__grid",
+            "#dwg_multi_block_plank-90effcd6bc .dwg-multi-block__grid",
+            "#dwg_multi_block_plank-afbaed9ade .dwg-multi-block__grid"
+          ]
+        },
+        {
+          "name": "embed-video",
+          "instances": [
+            "#dwg_media_asset_plank-2c5d53d68a"
+          ]
+        },
+        {
+          "name": "carousel-quote",
+          "instances": [
+            ".dwg-quote-gallery"
+          ]
+        },
+        {
+          "name": "columns-cta",
+          "instances": [
+            "#dwg_pre_footer_plank-241bcf37b0"
+          ]
+        }
+      ],
+      "urlPattern": "/*",
+      "sections": [
+        {
+          "id": "es1",
+          "name": "Hero",
+          "selector": [
+            "#dwg_hero_l3_plank-d82d453e7e",
+            ".dwg-hero-l3-plank"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "hero-split"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "es2",
+          "name": "G2 reviews + badges",
+          "selector": [
+            "#dwg_headline_plank-3b127dce19"
+          ],
+          "style": "dark",
+          "blocks": [
+            "cards-badge"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es3",
+          "name": "Security + accordion",
+          "selector": [
+            "#dwg_headline_plank-f3399edfb5"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "accordion-media"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es4",
+          "name": "Enterprise features media rows",
+          "selector": [
+            "#dwg_headline_plank-8d7ea828aa"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es5",
+          "name": "Like Dropbox, but bigger",
+          "selector": [
+            "#dwg_headline_plank-bb47e88177"
+          ],
+          "style": "dark",
+          "blocks": [
+            "cards-integration"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es6",
+          "name": "Expedia video",
+          "selector": [
+            "#dwg_headline_plank-7f54712143"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "embed-video"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es7",
+          "name": "App integrations",
+          "selector": [
+            "#dwg_headline_plank-13f4876065"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "cards-integration"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es8",
+          "name": "Forrester ROI stats",
+          "selector": [
+            "#dwg_headline_plank-d247160ca8"
+          ],
+          "style": "dark",
+          "blocks": [
+            "cards-integration"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es9",
+          "name": "Customer quotes",
+          "selector": [
+            "#dwg_quote_gallery_v2_plank-ab73b05f0c",
+            ".dwg-quote-gallery"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "carousel-quote"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "es10",
+          "name": "Good company stats",
+          "selector": [
+            "#dwg_headline_plank-b424e76701"
+          ],
+          "style": "light-beige",
+          "blocks": [
+            "cards-integration"
+          ],
+          "defaultContent": [
+            "h2",
+            ".dwg-stack__item .dwg-text",
+            "a.dwg-button2"
+          ]
+        },
+        {
+          "id": "es11",
+          "name": "Closing CTA",
+          "selector": [
+            "#dwg_pre_footer_plank-241bcf37b0"
+          ],
+          "style": "dark",
+          "blocks": [
+            "columns-cta"
+          ],
+          "defaultContent": []
         }
       ]
     }

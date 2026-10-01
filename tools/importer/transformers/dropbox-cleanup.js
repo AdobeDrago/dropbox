@@ -33,6 +33,9 @@ export default function transform(hookName, element, payload) {
       '.dwg-modal__portal',
       '.dwg-nav__overlay',
       'a.skip-to-main-content',
+      // A/B-test (Coframe) injections: sticky CTA bar duplicating page CTAs, empty mount points
+      '#cf-sticky-cta-bar',
+      '[id^="cf-"][id$="-mount"]',
     ]);
 
     // Empty <source src=""> entries inside videos produce broken media references
