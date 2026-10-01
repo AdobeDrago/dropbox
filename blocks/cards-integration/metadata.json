@@ -1,0 +1,20 @@
+{
+  "variantName": "cards-integration",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "minimal",
+    "purpose": "integration-list",
+    "imagePattern": "icon",
+    "structure": "icon + h3 + paragraph + link"
+  },
+  "contentPattern": "rows: [logo image | H3, paragraph, link]",
+  "usage": {
+    "pagesUsing": ["https://www.dropbox.com/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-30"
+  },
+  "options": [],
+  "memberVariantIds": ["cards-integration"]
+}

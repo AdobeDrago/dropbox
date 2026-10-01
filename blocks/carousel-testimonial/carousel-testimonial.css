@@ -1,0 +1,230 @@
+/* values extracted from https://www.dropbox.com/ quote cards (see migration-work/carousel-testimonial-extracted.css) */
+.carousel-testimonial {
+  position: relative;
+}
+
+/* source scroll area sits 96px below the section intro (dwg-pt--12) */
+:not(:first-child) > .carousel-testimonial {
+  margin-top: 96px;
+}
+
+/* bleed the scroll area to the section edges, like the source scroll area */
+.carousel-testimonial .carousel-testimonial-viewport {
+  margin: 0 -24px;
+  overflow: hidden;
+}
+
+.carousel-testimonial .carousel-testimonial-slides {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0 24px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 24px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.carousel-testimonial .carousel-testimonial-slides::-webkit-scrollbar {
+  display: none;
+}
+
+/* card */
+.carousel-testimonial .carousel-testimonial-slide {
+  flex: 0 0 300px;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 8px;
+  border-radius: 16px;
+  background-color: rgb(28 29 33);
+  scroll-snap-align: start;
+}
+
+/* thumbnail */
+.carousel-testimonial .carousel-testimonial-slide-media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background-color: var(--graphite-color);
+}
+
+.carousel-testimonial .carousel-testimonial-slide-media picture,
+.carousel-testimonial .carousel-testimonial-slide-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-testimonial .carousel-testimonial-slide-play {
+  display: block;
+  height: 100%;
+}
+
+/* play icon (source: 32px circle-play glyph, bottom-left, 4px inset) */
+.carousel-testimonial .carousel-testimonial-slide-media::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  width: 32px;
+  height: 32px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f7f5f2' d='M12 4c-5.159 0-8 2.842-8 8 0 5.159 2.841 8 8 8s8-2.841 8-8-2.841-8-8-8m-2 11.5v-7l5.5 3.5z'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+
+/* text column */
+.carousel-testimonial .carousel-testimonial-slide-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 8px 24px 24px;
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-content > * {
+  max-width: 100%;
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-content p.carousel-testimonial-slide-eyebrow {
+  margin: 24px 0;
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 14.4px;
+  color: rgb(205 47 123);
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-content h3 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.6px;
+  color: var(--on-dark-color);
+  text-wrap: balance;
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-content > p {
+  margin: 12px 0 24px;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  line-height: 21px;
+  color: rgb(247 245 242 / 60%);
+}
+
+/* "Watch testimonial" CTA: pinned to the bottom of the text column */
+main .carousel-testimonial .carousel-testimonial-slide-content > p.carousel-testimonial-slide-cta {
+  margin: auto 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19.2px;
+  color: var(--on-dark-color);
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-cta-text,
+main .carousel-testimonial .carousel-testimonial-slide-cta a:any-link {
+  color: var(--on-dark-color);
+  text-decoration: underline 1px rgb(247 245 242 / 60%);
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-cta a:any-link {
+  /* reset EDS button auto-decoration: source CTA is a text link */
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+}
+
+main .carousel-testimonial .carousel-testimonial-slide-cta a:any-link:hover {
+  text-decoration-color: var(--on-dark-color);
+}
+
+/* prev/next controls (source relies on drag-scroll; kept for keyboard/mouse access) */
+.carousel-testimonial .carousel-testimonial-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.carousel-testimonial .carousel-testimonial-nav button {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgb(247 245 242 / 60%);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--on-dark-color);
+  cursor: pointer;
+}
+
+.carousel-testimonial .carousel-testimonial-nav button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.carousel-testimonial .carousel-testimonial-nav button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 2px);
+  width: 8px;
+  height: 8px;
+  border: 2px solid;
+  border-bottom: 0;
+  border-left: 0;
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.carousel-testimonial .carousel-testimonial-nav .carousel-testimonial-next::after {
+  left: calc(50% - 2px);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+@media (width >= 768px) {
+  .carousel-testimonial .carousel-testimonial-slides {
+    padding: 0 max(48px, calc((100% - 1100px) / 2));
+    scroll-padding-inline: max(48px, calc((100% - 1100px) / 2));
+  }
+
+  .carousel-testimonial .carousel-testimonial-slide {
+    flex-basis: 720px;
+    grid-template-columns: 275px minmax(0, 1fr);
+    grid-template-rows: none;
+    align-items: center;
+  }
+
+  .carousel-testimonial .carousel-testimonial-slide-content {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 24px 4px;
+  }
+
+  main .carousel-testimonial .carousel-testimonial-slide-content p.carousel-testimonial-slide-eyebrow {
+    margin: 12px 0 24px;
+  }
+
+  main .carousel-testimonial .carousel-testimonial-slide-content > p {
+    margin: 12px 0;
+  }
+}
+
+@media (width >= 900px) {
+  .carousel-testimonial .carousel-testimonial-viewport {
+    margin: 0 -48px;
+  }
+}

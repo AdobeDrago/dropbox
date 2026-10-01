@@ -1,0 +1,20 @@
+{
+  "variantName": "carousel-testimonial",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "moderate",
+    "purpose": "testimonial-slider",
+    "imagePattern": "thumbnail-left",
+    "structure": "thumbnail + eyebrow + h3 + paragraph + video CTA"
+  },
+  "contentPattern": "3 rows: [thumbnail image | eyebrow, H3 quote, paragraph, watch link (video URL)]",
+  "usage": {
+    "pagesUsing": ["https://www.dropbox.com/"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-30"
+  },
+  "options": [],
+  "memberVariantIds": ["carousel-testimonial"]
+}

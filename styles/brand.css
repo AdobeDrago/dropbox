@@ -1,0 +1,48 @@
+/* Dropbox brand tokens, extracted from https://www.dropbox.com/ */
+:root {
+  /* fonts: Sharp Grotesk / Atlas Grotesk are licensed Dropbox fonts with no public CDN;
+     they render when installed or self-hosted, otherwise the system sans stack is used */
+  --heading-font-family: "Sharp Grotesk", sharpgrotesk, "Atlas Grotesk Web", "Atlas Grotesk", -apple-system, blinkmacsystemfont, "Segoe UI", "Helvetica Neue", helvetica, arial, sans-serif;
+  --display-font-family: "Sharp Grotesk 23", "Sharp Grotesk", sharpgrotesk, "Atlas Grotesk Web", "Atlas Grotesk", -apple-system, blinkmacsystemfont, "Segoe UI", "Helvetica Neue", helvetica, arial, sans-serif;
+  --body-font-family: "Atlas Grotesk Web", "Atlas Grotesk", atlasgrotesk, -apple-system, blinkmacsystemfont, "Segoe UI", "Helvetica Neue", helvetica, arial, sans-serif;
+
+  /* colors */
+  --background-color: #fff;
+  --text-color: #1e1919;
+  --text-muted-color: rgb(82 74 62 / 82%);
+  --link-color: #0061fe;
+  --link-hover-color: #0050d0;
+  --brand-blue: #0061fe;
+  --coconut-color: #f7f5f2;
+  --graphite-color: #1e1919;
+  --light-color: #f7f5f2;
+  --dark-color: #1e1919;
+  --on-dark-color: #f7f5f2;
+
+  /* spacing */
+  --section-padding: 72px;
+  --section-padding-large: 120px;
+  --content-max-width: 1344px;
+  --nav-height: 72px;
+  --button-radius: 16px;
+
+  /* heading sizes (mobile) */
+  --heading-size-xxl: 32px;
+  --heading-size-xl: 24px;
+  --heading-size-l: 20px;
+  --heading-size-m: 20px;
+  --heading-size-s: 18px;
+  --heading-size-xs: 16px;
+}
+
+@media (width >= 900px) {
+  :root {
+    /* heading sizes (desktop) */
+    --heading-size-xxl: 40px;
+    --heading-size-xl: 32px;
+    --heading-size-l: 20px;
+    --heading-size-m: 20px;
+    --heading-size-s: 18px;
+    --heading-size-xs: 16px;
+  }
+}
